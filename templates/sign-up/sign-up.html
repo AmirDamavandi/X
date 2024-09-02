@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Login Form - Code Mo</title>
+    <link rel="stylesheet" href="{% static 'styles/sign-up/sign-up.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="box box-one">
+            <i class="fab fa-twitter"><img src="{% static 'icons/x-icon/x-l.svg' %}"/></i>
+        </div>
+        <div class="box box-two">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="next-btn">Create your account</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
