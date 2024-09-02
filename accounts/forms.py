@@ -25,3 +25,12 @@ class SignupForm(forms.Form):
         if cleaned_data['password'] != cleaned_data['password2']:
             raise forms.ValidationError('Passwords do not match')
         return cleaned_data
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        label='Username', max_length=60, widget=forms.TextInput(attrs={'placeholder': 'Email, Phone or Username'})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
+    )
