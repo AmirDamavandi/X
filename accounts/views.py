@@ -12,3 +12,10 @@ def sign_up(request):
     form = signup_form()
     context = {'form': form}
     return render(request, 'sign-up/sign-up.html', context)
+
+
+def sign_in(request):
+    login_form = LoginForm
+    form = login_form()
+    context = {'form': form}
+    return render(request, 'sign-in/sign-in.html', context)
