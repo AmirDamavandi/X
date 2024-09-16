@@ -19,11 +19,7 @@
             <i class="fab fa-twitter"><img src="{% static 'icons/x-icon/x-l.svg' %}"/></i>
         </div>
         <div class="box box-two">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="next-btn">Create your account</button>
-            </form>
+            {% include 'components/sign-up/sign-up.html' %}
         </div>
     </div>
 </body>
