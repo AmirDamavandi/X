@@ -1,6 +1,7 @@
 from django import forms
 import re as regex
 from .models import User
+from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 
 
@@ -48,3 +49,16 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data['username']
+        password = cleaned_data['password']
+        authenticating = authenticate(username=username, password=password)
+        if not authenticating:
+            query = User.objects.filter(username=username).exists()
+            if query:
+                self.add_error('password', 'Incorrect password.')
+            else:
+                self.add_error('username', 'Incorrect username or password')
+        return self.cleaned_data

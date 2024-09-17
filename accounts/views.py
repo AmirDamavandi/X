@@ -46,8 +46,21 @@ class SignUpView(View):
         return render(request, self.template_name, {'form': signup_form})
 
 
-def sign_in(request):
+class LoginView(View):
+    template_name = 'login/login.html'
     login_form = LoginForm
-    form = login_form()
-    context = {'form': form}
-    return render(request, 'sign-in/sign-in.html', context)
+
+    def get(self, request):
+        form = self.login_form()
+        context = {'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        form = self.login_form(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(username=cd['username'], password=cd['password'])
+            if user is not None:
+                login(request, user)
+                return HttpResponse('logged in')
+        return render(request, self.template_name, {'form': form})
