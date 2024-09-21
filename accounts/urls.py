@@ -7,4 +7,5 @@ urlpatterns = [
     path('', X.as_view(), name='X'),
     path('sign-up/', SignUpView.as_view(), name='SignUpView'),
     path('login/', LoginView.as_view(), name='LoginView'),
+    path('<str:username>/', ProfileView.as_view(), name='ProfileView'),
 ]

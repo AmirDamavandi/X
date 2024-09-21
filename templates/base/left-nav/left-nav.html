@@ -13,11 +13,11 @@ font-family: Roboto;
                       
                     
                 </div>
-                <a style="color:inherit;text-decoration: None" class="h-p" href="{% url 'accounts:home' %}">
+{#                <a style="color:inherit;text-decoration: None" class="h-p" href="{% url 'accounts:home' %}">#}
                 <div class="home-container">
                     <div class="home-container-2" id="home-icon">
                         <div class="home-icon-container">
-                            <img class="home-icon" id="home-img" src="{% static 'twitter-icons/hut.png' %}">
+                            <img class="home-icon" id="home-img" src="{% static 'twitter-icons/homepage.png' %}">
                         </div>
                         <div class="home-icon-container">
                             <div class="home-text">
@@ -96,7 +96,7 @@ font-family: Roboto;
                 <div class="profile-container">
                     <div class="profile-container-2" id="profile-container-2">
                         <div class="profile-icon-container">
-                            <img class="profile-icon" id="profile-img" src="{% static 'twitter-icons/user.png' %}">
+                            <img class="profile-icon" id="profile-img" src="{% static 'twitter-icons/user-empty.png' %}">
                         </div>
                         <div class="profile-icon-container">
                             <div class="profile-text">
@@ -128,32 +128,32 @@ const homeImg = document.getElementById('home-img');
 const emptyHomeIconSrc = "{% static 'twitter-icons/homepage.png' %}";
 const filledHomeIconSrc = "{% static 'twitter-icons/homepage-filled.png' %}";
 
-const targetUrlPath = "{% url 'accounts:home' %}";
+{#const targetUrlPath = "{% url 'accounts:home' %}";#}
 
 
-if (window.location.pathname === targetUrlPath) {
-    homeImg.src = filledHomeIconSrc;
-} else {
-    homeImg.src = emptyHomeIconSrc;
-}
+{#if (window.location.pathname === targetUrlPath) {#}
+{#    homeImg.src = filledHomeIconSrc;#}
+{#} else {#}
+{#    homeImg.src = emptyHomeIconSrc;#}
+{#}#}
+{##}
+{##}
+{#homeIconContainer.addEventListener('click', () => {#}
+{#    window.location.href = targetUrlPath;#}
+{#});#}
 
 
-homeIconContainer.addEventListener('click', () => {
-    window.location.href = targetUrlPath;
-});
-
-
-const profileContainer = document.getElementById('profile-container-2');
-const profileImg = document.getElementById('profile-img');
-
-const emptyProfileIconSrc = "{% static 'twitter-icons/user-empty.png' %}";
-const filledProfileIconSrc = "{% static 'twitter-icons/user.png' %}";
-
-profileContainer.addEventListener('click', () => {
-    if (profileImg.src.includes('{% static 'twitter-icons/user-empty.png' %}')) {
-        profileImg.src = filledProfileIconSrc;
-    } else {
-        profileImg.src = emptyProfileIconSrc;
-    }
+{#const profileContainer = document.getElementById('profile-container-2');#}
+{#const profileImg = document.getElementById('profile-img');#}
+{##}
+{#const emptyProfileIconSrc = "{% static 'twitter-icons/user-empty.png' %}";#}
+{#const filledProfileIconSrc = "{% static 'twitter-icons/user.png' %}";#}
+{##}
+{#profileContainer.addEventListener('click', () => {#}
+{#    if (profileImg.src.includes('{% static 'twitter-icons/user-empty.png' %}')) {#}
+{#        profileImg.src = filledProfileIconSrc;#}
+{#    } else {#}
+{#        profileImg.src = emptyProfileIconSrc;#}
+{#    }#}
 });
 </script>

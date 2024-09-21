@@ -9,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="icon" type="image/x-icon" href="{% static 'icons/x-icon/x-l.svg' %}">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700;900&display=swap" rel="stylesheet">
-
+        <link rel="stylesheet" href="{% static 'styles/profile/profile.css' %}">
         <link href="{% static 'styles/left-sidebar/left-sidebar.css' %}" rel="stylesheet">
         <link href="{% static 'styles/right-sidebar/right-sidebar.css' %}" rel="stylesheet">
         <title>{% block title %}
@@ -19,5 +19,9 @@
 
     
 {% include 'base/left-nav/left-nav.html' %}
+
+{% block content %}
+	
+{% endblock %}
 
 {% include 'base/right-nav/right-nav.html' %}

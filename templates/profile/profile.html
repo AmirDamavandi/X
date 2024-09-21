@@ -1,0 +1,62 @@
+{% extends 'base/base/base.html' %}
+{% load static %}
+
+{% block title %}
+	{{ user.username }}
+{% endblock %}
+
+{% block content %}
+	<!--  Credit to Codegem @ https://linktr.ee/codegem.
+  //
+//-->
+<div class="content">
+  
+<!-- Navigation   -->
+  <div class="navigation">
+    <div class="arrow"></div>
+    <div class="header">Amir</div>
+    <div class="subtext">19 Tweets</div>
+  </div>
+<!--   Cover -->
+  <div class="cover">
+    <img src="{% static 'icons/x-icon/x-l.svg' %}" alt="">
+  </div>
+  
+<!--  Bio section  -->
+  <div class="bio">
+    
+    <div class="pre-bio">
+      <div class="avatar"></div>
+      <div class="edit-profile">Edit profile</div>
+    </div>
+    
+    <div>
+      <div class="name">Amir</div>
+      <div class="atuser">@Amir</div>
+    </div>
+    
+    <div>it's a django project</div>
+    <div>
+      <a href="https://google.com">Mywebsite</a>
+      <span class="secondaryml-4">Joined March 2021</span>
+    </div>
+    
+    <div>
+      <strong>15</strong> <span class="secondary">Following<span>
+      <strong>12</strong> <span class="secondary">Followers</span>
+    </div>
+   </div>    
+      
+<!--   Tabs start     -->
+      <div class="tabs">
+        <div class="selected">Tweets</div>
+        <div>Tweets & Replies</div>
+        <div>Media</div>
+        <div>Links</div>
+      </div>
+    
+    
+
+  
+</div>
+{% endblock %}

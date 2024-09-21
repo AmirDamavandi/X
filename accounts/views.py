@@ -64,3 +64,12 @@ class LoginView(View):
                 login(request, user)
                 return HttpResponse('logged in')
         return render(request, self.template_name, {'form': form})
+
+
+class ProfileView(View):
+    template_name = 'profile/profile.html'
+
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        context = {'user': user}
+        return render(request, self.template_name, context)
