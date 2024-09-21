@@ -65,9 +65,9 @@ class UserAdmin(BaseUserAdmin):
     ]
     list_filter = ['is_admin', 'is_verified', 'is_suspended', 'date_joined', 'date_of_birth']
     fieldsets = [
-        (None, {'fields': ['email', 'username', 'password']}),
+        (None, {'fields': ['email', 'password']}),
         ('Personal info', {'fields': [
-            'first_name', 'last_name', 'phone_number', 'location', 'website',
+            'first_name', 'last_name', 'username', 'phone_number', 'location', 'website',
             'gender', 'bio', 'account_type',
         ]}),
         ('Verify', {'fields': ['is_verified']}),
@@ -80,7 +80,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 'classes': ['wide'],
-                'fields': ['first_name', 'username', 'email', 'password1', 'password2'],
+                'fields': ['username', 'email', 'password1', 'password2'],
             },
         ),
     ]

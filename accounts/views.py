@@ -31,16 +31,12 @@ class SignUpView(View):
         signup_form = self.form(request.POST)
         if signup_form.is_valid():
             cd = signup_form.cleaned_data
-            user = User(
+            user = User.objects.create_user(
                 first_name=cd['first_name'],
-                last_name=cd['last_name'],
                 username=cd['username'],
                 email=cd['email'],
-                phone_number=cd['phone_number'],
-                password=cd['password1'],
+                password=cd['password1']
             )
-            user.set_password(cd['password1'])
-            user.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return HttpResponse('you are now logged in')
         return render(request, self.template_name, {'form': signup_form})
@@ -49,6 +45,11 @@ class SignUpView(View):
 class LoginView(View):
     template_name = 'login/login.html'
     login_form = LoginForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponse('you are already logged in')
+        return super(LoginView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
         form = self.login_form()
@@ -59,7 +60,7 @@ class LoginView(View):
         form = self.login_form(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
+            user = authenticate(request, username=cd['username'], password=cd['password'])
             if user is not None:
                 login(request, user)
                 return HttpResponse('logged in')

@@ -13,7 +13,7 @@ class User(AbstractBaseUser):
     header = models.ImageField(upload_to='users_header/', null=True, blank=True)
     avatar = models.ImageField(upload_to='users_avatar/', null=True, blank=True)
     username = models.CharField(max_length=30, unique=True, help_text='enter your username')
-    email = models.EmailField(unique=True, help_text='enter your email address', blank=True, null=True)
+    email = models.EmailField(unique=True, help_text='enter your email address')
     phone_number = models.CharField(
         max_length=11, unique=True, help_text='enter your phone number', blank=True, null=True
     )
@@ -43,14 +43,6 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.username
 
-    def clean(self):
-        if not self.email and not self.phone_number:
-            raise ValidationError("Either email or phone number must be provided.")
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)
-
     def has_perm(self, perm, obj=None):
         """Does the user have a specific permission?"""
         # Simplest possible answer: Yes, always
@@ -66,9 +58,6 @@ class User(AbstractBaseUser):
         """Is the user a member of staff?"""
         # Simplest possible answer: All admins are staff
         return self.is_admin
-
-    def followers_count(self):
-        return self.follower.count()
 
 
 class Relation(models.Model):

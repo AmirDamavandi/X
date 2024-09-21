@@ -1,5 +1,8 @@
 from django import forms
 import re as regex
+
+from django.http import request
+
 from .models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
@@ -13,7 +16,7 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone_number', 'password1', 'password2']
+        fields = ['first_name', 'username', 'email', 'password1', 'password2']
 
     def clean(self):
         cleaned_data = super().clean()
@@ -57,8 +60,8 @@ class LoginForm(forms.Form):
         authenticating = authenticate(username=username, password=password)
         if not authenticating:
             query = User.objects.filter(username=username).exists()
-            if query:
-                self.add_error('password', 'Incorrect password.')
+            if not query:
+                self.add_error('username', 'Incorrect username or password.')
             else:
-                self.add_error('username', 'Incorrect username or password')
+                self.add_error('password', 'Incorrect password.')
         return self.cleaned_data
