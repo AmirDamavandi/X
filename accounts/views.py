@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .forms import *
 from django.views.generic import View
 from django.http import HttpResponse
@@ -20,7 +20,7 @@ class SignUpView(View):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return HttpResponse('you don\' need to sign up, you authenticated already')
-        return super().dispatch(request, *args, **kwargs)
+        return super(SignUpView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
         signup_form = self.form()
@@ -70,6 +70,6 @@ class ProfileView(View):
     template_name = 'profile/profile.html'
 
     def get(self, request, username):
-        user = User.objects.get(username=username)
+        user = get_object_or_404(User, username=username)
         context = {'user': user}
         return render(request, self.template_name, context)

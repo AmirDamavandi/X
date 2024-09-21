@@ -67,3 +67,27 @@ class User(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+    def followers_count(self):
+        return self.follower.count()
+
+
+class Relation(models.Model):
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
+    followed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.from_user} followed {self.to_user}'
+
+    class Meta:
+        unique_together = (('from_user', 'to_user'),)
+        verbose_name = _('relation')
+        verbose_name_plural = _('relations')
+
+    def clean(self):
+        if self.from_user == self.to_user:
+            raise ValidationError('users cannot follow themselves')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, *kwargs)
