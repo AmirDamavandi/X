@@ -1,0 +1,272 @@
+* {
+  margin:0;
+  padding:0;
+  position: relative;
+}
+:root {
+    --bkg-color: #15202b;
+    --wallpaper-color: #3e5366;
+
+    --primary-color: white;
+    --secondary-text: #8898a6;
+
+    --border-color: #38444d;
+
+    --pfp-border: 0;
+
+    /* Color accents*/
+    --classic-blue: 29, 161, 241;
+    --avocado-green: 25, 191, 100;
+    --orange-sun: 255, 174, 30;
+    /* --- */
+
+    --accent-color-rgb: var(--orange-sun);
+    --accent-color: rgb(var(--accent-color-rgb));
+  }
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Ubuntu, "Helvetica Neue", sans-serif;
+  color:white;
+  background-color:#15202b;
+  font-weight: 600;
+}
+.content {
+  width:40em;
+  margin: 0 auto;
+  border:1px solid #2F3336;
+}
+.navigation {
+  display:grid;
+  grid-template: auto auto / 4rem auto;
+  padding:.5em;
+}
+.arrow {
+  grid-row:1/3;
+  align-self:center;
+  margin-left:0.8em;
+  cursor:pointer;
+  margin-bottom: 40px;
+  position: sticky;
+  color: red;
+}
+.arrow-img {
+  fill: #ffca58;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  margin-top: 25%;
+  margin-left:20%
+
+}
+.arrow::after {
+  content:'';
+  position:absolute;
+  width:2.7em;
+  height:2.7em;
+  background-color: gray;
+  top:-15%;
+  left:-7%;
+  border-radius:50%;
+  transition: opacity 0.3s;
+  opacity:0;
+}
+.arrow:hover::after {
+  opacity:0.2;
+}
+.header {
+  font-size:1.1em;
+  font-weight: 600;
+  color:white;
+}
+.subtext {
+  font-size:0.85em;
+  color:#5B6F83;
+}
+.cover {
+  background-color:#3e5366;
+  height:13rem;
+}
+.cover img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.cover img::selection {
+  text-decoration: none;
+}
+  .bio {
+      padding: 15px 15px 0;
+  }
+
+  .bio > div {
+    margin-bottom: 12px;
+    color: var(--primary-color);
+}
+.pre-bio {
+  display: flex;
+  justify-content:flex-end;
+  position: static;
+  margin-bottom:1em;
+}
+.avatar {
+    width: calc(130px - 2 * 4px);
+    height: calc(130px - 2 * 4px);
+    position: absolute;
+    bottom: -3em;
+    border-radius: 50%;
+    border: 4px solid #15202b;
+    background-size: cover;
+    cursor: pointer;
+}
+.avatar::selection {
+  text-decoration: none;
+}
+.avatar:hover::after {
+  content: "";
+  position:absolute;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  opacity:0.5;
+  background-color: var(--bkg-color);
+}
+
+  .edit-profile {
+    font-weight: 500;
+    border: 1px solid gray;
+    color: white;
+    padding: 0.5em 1.2em;
+    border-radius: 99999px;
+    background-color: rgba(var(--accent-color-rgb), 0);
+    transition: background-color 0.2s;
+
+  }
+
+.edit-profile::selection {
+  text-decoration: none;
+}
+
+  .edit-profile:hover {
+    background-color: rgb(22, 24, 28);
+  }
+  a {
+    color: rgb(29, 155, 240);
+  }
+div.span {
+color: gray;
+}
+.ml-4 {
+  margin-left:2em;
+}
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(4,25%);
+    align-items: stretch;
+    font-weight: 700;
+    font-size: 1em;
+    color: #ffffff;
+  }
+.tabs > div {
+  flex-grow:1;
+  text-align:center;
+  padding:1em;
+  position:relative;
+  transition: all 0.3s;
+  background-color: rgba(var(--accent-color-rgb), 0);
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+
+}
+  .tabs > div:hover {
+    background-color: rgb(22, 24, 28);
+  }
+
+  .selected {
+    border-bottom: 3px solid deepskyblue;
+    color: #ffffff;
+
+}
+
+.name-h2 {
+  font-weight: 700;
+}
+
+
+.small-username {
+  font-family: "IBM Plex Sans", sans-serif;
+  color: rgb(113, 118, 123);
+  font-weight: 500;
+}
+
+.user-bio {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Ubuntu, "Helvetica Neue", sans-serif;
+  font-weight: 400;
+}
+
+.loc-img {
+  width: 15px;
+  height: 15px;
+}
+
+.user-loc {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+  color: rgb(113, 118, 123);
+}
+
+.user-web {
+  margin-left: 15px;
+  text-decoration: none;
+  margin-top: -50px;
+}
+
+.link {
+  text-decoration: none;
+  justify-content: start;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+
+}
+
+
+.date-of-birth {
+  margin-left: 15px;
+}
+
+.date-joined {
+  margin-left: 15px;
+}
+
+.date {
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+  color:  rgb(113, 118, 123);
+}
+
+.follow1 {
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+  color:  rgb(113, 118, 123);
+}
+
+.follow2 {
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+  color:  rgb(113, 118, 123);
+}
+
+.tweets {
+  color: rgb(113, 118, 123);
+}
+
+.media {
+  color: rgb(113, 118, 123);
+}
+
+.likes {
+  color: rgb(113, 118, 123);
+}

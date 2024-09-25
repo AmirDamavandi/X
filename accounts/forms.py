@@ -1,30 +1,48 @@
 from django import forms
 import re as regex
 
+from django.http import request
 
-class SignupForm(forms.Form):
-    first_name = forms.CharField(label='First Name', max_length=30)
-    last_name = forms.CharField(label='Last Name', max_length=30)
-    username = forms.CharField(label='Username', max_length=60)
-    email = forms.EmailField(label='Email Address')
-    phone_number = forms.CharField(label='Phone Number', max_length=13)
-    password = forms.CharField(widget=forms.PasswordInput)
-    password2 = forms.CharField(label='password', widget=forms.PasswordInput)
+from .models import User
+from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        username_pattern = r'[a-zA-Z0-9]+(._)?'
-        # if User.objects.filter(username=username).exists():
-        #     raise forms.ValidationError('Username already exists')
-        if not regex.match(username_pattern, username):
-            raise forms.ValidationError('Invalid username')
-        return username
+
+class SignUpForm(forms.ModelForm):
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput, max_length=128)
+    password2 = forms.CharField(
+        label='Password Confirmation', widget=forms.PasswordInput, max_length=128,
+    )
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'username', 'email', 'password1', 'password2']
 
     def clean(self):
         cleaned_data = super().clean()
-        if cleaned_data['password'] != cleaned_data['password2']:
-            raise forms.ValidationError('Passwords do not match')
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        email = cleaned_data.get('email')
+        phone_number = cleaned_data.get('phone_number')
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', 'Passwords do not match')
+        if email is None and phone_number is None:
+            self.add_error('email', 'Either email or phone number must be provided.')
         return cleaned_data
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        username_pattern = r'^[a-zA-Z0-9._]{3,30}$'
+        if not regex.match(username_pattern, username):
+            return self.add_error('username', 'Incorrect username.')
+        return username
+
+    def clean_password1(self):
+        password1 = self.cleaned_data['password1']
+        password_pattern = r'^[a-zA-Z0-9@$%&*_=+\']{6,128}$'
+        if not regex.match(password_pattern, str(password1)):
+            return self.add_error('password1', ValidationError('Incorrect password'))
+        return password1
 
 
 class LoginForm(forms.Form):
@@ -34,3 +52,16 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data['username']
+        password = cleaned_data['password']
+        authenticating = authenticate(username=username, password=password)
+        if not authenticating:
+            query = User.objects.filter(username=username).exists()
+            if not query:
+                self.add_error('username', 'Incorrect username or password.')
+            else:
+                self.add_error('password', 'Incorrect password.')
+        return self.cleaned_data

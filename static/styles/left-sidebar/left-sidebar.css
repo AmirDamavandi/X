@@ -1,0 +1,285 @@
+.sidebar{
+    position: absolute;
+
+    color: whitesmoke;
+    height: 500px;
+    width: 100px;
+
+}
+
+
+.sidebar-container{
+    margin-top: -0px;
+    margin-left: 250px;
+    width: 44%;
+    max-width: 100%;
+    min-width:30%;
+    height: 610px;
+
+
+
+}
+
+.my-profile-container{
+
+    position: fixed;
+    height: 100%;
+
+    top:45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+.my-profile-container-2:hover{
+    background-color: rgba(63, 58, 58, 0.3);
+    border-radius: 50px;
+
+}
+.twitter-logo-container{
+    width: 250px;
+    margin-bottom: 10px;
+    padding: 13px 0 0 9px;
+}
+
+.home-container-2:hover,.explore-container-2:hover
+,.profile-container-2:hover{
+    border-radius: 50px;
+    width:140px;
+    padding-bottom: 10px;
+    background-color: rgba(63, 58, 58, 0.3);
+    transition: background-color 0.15s;
+}
+.notification-container-2:hover{
+    border-radius: 50px;
+    width:190px;
+    padding-bottom: 10px;
+    background-color: rgba(63, 58, 58, 0.3);
+    transition: background-color 0.15s;
+}
+.message-container-2:hover{
+    border-radius: 50px;
+    width:170px;
+    padding-bottom: 10px;
+    background-color: rgba(63, 58, 58, 0.3);
+    transition: background-color 0.15s;
+}
+.bookmark-container-2:hover{
+    border-radius: 50px;
+    width:175px;
+    padding-bottom: 5px;
+    background-color: rgba(63, 58, 58, 0.3);
+    transition: background-color 0.15s;
+}
+.list-container-2:hover{
+    border-radius: 50px;
+    width:130px;
+    padding-bottom: 7px;
+    background-color: rgba(63, 58, 58, 0.3);
+    transition: background-color 0.15s;
+}
+.more-container-2:hover{
+    border-radius: 50px;
+    width:140px;
+    padding-bottom: 8px;
+    background-color: rgba(63, 58, 58, 0.3);
+    transition: background-color 0.15s;
+
+}
+.more-container{
+    width: 260px;
+    height: 50px;
+}
+.home-container,.explore-container,
+.notification-container,.message-container,
+.bookmark-container,.list-container,
+.profile-container{
+    width: 260px;
+    height: 60px;
+}
+.twitter-logo{
+    width:32px;
+
+
+}
+.twitter-logo-container-2{
+    width: 35px;
+    padding: 10px 5px 6px 8px;
+    border-radius: 50px;
+    margin-left: -8px;
+    margin-top: -9px;
+}
+.twitter-logo-container-2:hover{
+    background-color: rgba(25, 155, 240, 0.12);
+}
+.home-icon{
+    width: 26px;
+    margin-top: 15px;
+    padding-left: 10px;
+
+}
+.home-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+
+.home-text{
+    padding-top: 13px;
+    font-size: 20px;
+    padding-left: 16px;
+    font-weight: 700;
+}
+.explore-icon{
+    width: 28px;
+    padding-left: 8px;
+    padding-top: 10px;
+}
+.explore-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+
+}
+.explore-text{
+    padding-top: 7px;
+    font-size: 20px;
+    padding-left: 15px;
+}
+.notification-icon{
+    width: 26px;
+    margin-left: 9px;
+    padding-top: 15px;
+}
+.notification-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+}
+.notification-text{
+    margin-left:16px;
+    padding-top: 8px;
+    font-size: 20px;
+}
+.message-icon{
+    width: 27px;
+    margin-left: 8px;
+    padding-top: 15px;
+}
+.message-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+}
+.message-text{
+    padding-left: 15px;
+    padding-top: 10px;
+    font-size: 20px;
+}.bookmark-icon{
+    width: 30px;
+    margin-left: 6px;
+    padding-top: 10px;
+}
+.bookmark-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+}
+.bookmark-text{
+    padding-left: 14px;
+    padding-top:2px ;
+    font-size: 20px;
+}.list-icon{
+    width: 32px;
+    margin-left:6px;
+    padding-top: 6px;
+}
+.list-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+}
+.list-text{
+    margin-left:13px;
+    margin-top: 3px;
+    font-size: 20px;
+}.profile-icon{
+    width: 27px;
+    margin-left:9px;
+    padding-top: 10px;
+}
+.profile-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+}
+.profile-text{
+    padding-top: 4px;
+    margin-left:15px;
+    font-size: 20px;
+}.more-icon{
+    width: 24px;
+    padding-left: 11px;
+    padding-top: 18px;
+}
+.more-icon-container{
+    display: inline-block;
+    vertical-align: middle;
+
+}
+.more-text{
+    margin-left:16px;
+    margin-top:12px;
+    font-size: 20px;
+
+}
+
+.tweet{
+    margin-left:-3px;
+    color: white;
+    vertical-align: middle;
+    font-size: 17px;
+    font-weight: 700;
+    background-color: rgb(25, 155, 240);
+    padding: 10px 85px;
+    margin-top: 20px;
+    border-radius: 60px;
+    height: 56px;
+    width:230px;
+    transition: opacity 0.15s, opacity ;
+
+}
+.tweet:hover{
+    opacity: 0.9;
+}
+.my-Profile{
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+    object-fit: cover;
+}
+
+.profile{
+
+   display: inline-block;
+   vertical-align: middle;
+   line-height: 0.4 ;
+   margin-left: 5px;
+
+}
+.name{
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    width: 140px;
+}
+.username{
+    font-size: 15px;
+    color: rgb(113, 118, 123);
+
+}
+.three-dot{
+    margin-left:0;
+    margin-top: 8px;
+    font-size: 24px;
+}
+
+.sidebar *::selection {
+    text-decoration: none;
+}

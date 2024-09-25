@@ -28,14 +28,10 @@
         </div>
         <h5>Or</h5>
         <div class="box box-two">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="next-btn">Next</button>
-            </form>
+            {% include 'components/login/login.html' %}
             <button>Forget password</button>
         </div>
-        <p>Don't have an account <a href="{% url 'accounts:sign_up' %}">Sign Up</a></p>
+        <p>Don't have an account <a href="{% url 'accounts:SignUpView' %}">Sign Up</a></p>
     </div>
 </body>
 </html>
