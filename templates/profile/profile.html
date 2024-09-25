@@ -2,60 +2,129 @@
 {% load static %}
 
 {% block title %}
-	{{ user.username }}
+	{{ user.first_name }} (@{{ user.username }}) / X
 {% endblock %}
 
 {% block content %}
-	<!--  Credit to Codegem @ https://linktr.ee/codegem.
-  //
-//-->
+
 <div class="content">
   
 <!-- Navigation   -->
   <div class="navigation">
-    <div class="arrow"></div>
-    <div class="header">Amir</div>
-    <div class="subtext">19 Tweets</div>
+    <a onclick="back()" class="arrow"><img class="arrow-img" src="{% static 'icons/x-icon/arrow.png' %}" alt="back"></a>
+        <div class="header">{{ user.full_name }}</div>
+    <div class="subtext">0 Tweets</div>
   </div>
 <!--   Cover -->
   <div class="cover">
-    <img src="{% static 'icons/x-icon/x-l.svg' %}" alt="">
+    {% if user.header  %}
+    	<a href="{{ user.header_image }}"><img src="{{ user.header_image }}" alt=""></a>
+    {% else %}
+        <img src="{% static 'icons/x-icon/64cebe1d31f50e161e4c825a_X-logo-transparent-white-twitter.png' %}" alt="">
+    {% endif %} 
+    
   </div>
   
 <!--  Bio section  -->
   <div class="bio">
-    
+    <div>
+        {% if user.avatar %}
+            <a href="{{ user.avatar_image }}"><img  class="avatar" src="{{ user.avatar_image }}" alt=""></a>
+        {% else %}
+            <a href="../../static/icons/x-icon/default_profile_400x400.png"><img  class="avatar" src="../../static/icons/x-icon/default_profile_400x400.png" alt=""></a>
+        {% endif %}
+    </div>
     <div class="pre-bio">
-      <div class="avatar"></div>
-      <div class="edit-profile">Edit profile</div>
+    {% if user == active_user %}
+        <a methods="post" class="edit-profile">Edit profile</a>
+    {% elif not following %}
+        <div style="background-color: #ffffff; color: black" class="edit-profile">Follow</div>
+    {% elif following %}
+        <div style="background-color: black; color: #ffffff" class="edit-profile">Following</div>
+    {% endif %} 
     </div>
     
     <div>
-      <div class="name">Amir</div>
-      <div class="atuser">@Amir</div>
+        <div> <span><h3>{{ user.full_name }}{% if user.is_verified %}
+      	<img class="verified-icon" src="{% static 'twitter-icons/verified.png' %}" alt="verified">
+      {% endif %}</h3> </span></div>
+        <div class="small-username">@{{ user.username }}</div>
+    </div>
+    {% if user.bio %}
+    	<div class="user-bio">{{ user.bio }}</div>
+    {% else %}
+        <br/>
+    {% endif %} 
+    
+    <div>
+        {% if user.location %}
+        <span class="user-loc">
+            <img class="loc-img" src="{% static 'icons/x-icon/marker.png' %}" alt="loc">
+            <span class="user-loc">{{ user.location }}</span></span>
+        {% endif %}
+        {% if user.website %}
+            {% if user.location %}
+            	<span class="user-web">
+                    <a class="link" href="{{ user.website }}"><img src="{% static 'icons/x-icon/link.png' %}" alt="link">     {{ user.user_website }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a class="link" href="{{ user.website }}"><img src="{% static 'icons/x-icon/link.png' %}" alt="link">     {{ user.user_website }}</a>
+                </span>
+            {% endif %} 
+            
+        {% endif %}
+        {% if user.date_of_birth %}
+        	{% if user.location or user.website %}
+        		<span class="date-of-birth">
+                    <span class="date"><img src="{% static 'icons/x-icon/balloon.png' %}" alt="date">  Born {{ user.birthdate_format }}</span>
+                </span>
+            {% else %}
+                <span>
+                    <span class="date"><img src="{% static 'icons/x-icon/balloon.png' %}" alt="date">  Born {{ user.birthdate_format }}</span>
+                </span>
+        	{% endif %} 
+        {% endif %} 
+        {% if user.location or user.website or user.date_of_birth %}
+        <span class="date-joined">
+        <p class="date"><img src="{% static 'icons/x-icon/calendar.png' %}" alt="date">  Joined {{ user.date_joined_format}}</p>
+        </span>
+        {% else %}
+            <span>
+            <span class="date"><img src="{% static 'icons/x-icon/calendar.png' %}" alt="date"> Joined {{ user.date_joined_format}}</span>
+            </span>
+        {% endif %}
     </div>
     
-    <div>it's a django project</div>
     <div>
-      <a href="https://google.com">Mywebsite</a>
-      <span class="secondaryml-4">Joined March 2021</span>
-    </div>
-    
-    <div>
-      <strong>15</strong> <span class="secondary">Following<span>
-      <strong>12</strong> <span class="secondary">Followers</span>
+    <span class="follow1">
+      <strong style="color: #ffffff">{{ user.following_count }}</strong> <span class="">Following</span>
+    </span>
+    <span class="follow2">
+      <strong style="margin-left: 15px; color: #ffffff">{{ user.follower_count }}</strong> <span class="follow2">Followers</span>
+    </span>
     </div>
    </div>    
       
 <!--   Tabs start     -->
       <div class="tabs">
         <div class="selected">Tweets</div>
-        <div>Tweets & Replies</div>
-        <div>Media</div>
-        <div>Links</div>
+        <div class="tweets">Tweets & Replies</div>
+        <div class="media">Media</div>
+        <div class="likes">Likes</div>
       </div>
     
     
+<script>
+    function back() {
+        if (history.length > 1) {
+            history.back()
+        }
+        {#else {#}
+        {#    window.location.href = '{% url 'accounts:Home' %}'#}
+        {#}#}
+    }}
+</script>
 
   
 </div>

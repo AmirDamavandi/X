@@ -1,15 +1,15 @@
 .sidebar{
-    position: fixed;
+    position: absolute;
 
     color: whitesmoke;
-    height: 100%;
-    width: 100%;
-
-
+    height: 500px;
+    width: 100px;
 
 }
+
+
 .sidebar-container{
-    margin-top: -50px;
+    margin-top: -0px;
     margin-left: 250px;
     width: 44%;
     max-width: 100%;
@@ -40,7 +40,7 @@
 .twitter-logo-container{
     width: 250px;
     margin-bottom: 10px;
-    padding: 13px 0px 0px 9px;
+    padding: 13px 0 0 9px;
 }
 
 .home-container-2:hover,.explore-container-2:hover
@@ -242,7 +242,7 @@
     border-radius: 60px;
     height: 56px;
     width:230px;
-    transition: opacity 0.15s, color opacity 1;
+    transition: opacity 0.15s, opacity ;
 
 }
 .tweet:hover{
@@ -275,8 +275,11 @@
 
 }
 .three-dot{
-    margin-left:0px;
+    margin-left:0;
     margin-top: 8px;
     font-size: 24px;
 }
 
+.sidebar *::selection {
+    text-decoration: none;
+}

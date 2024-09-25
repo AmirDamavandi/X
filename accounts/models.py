@@ -3,9 +3,9 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from .manager import MyUserManager
 from django.core.exceptions import ValidationError
-
-
+from urllib.parse import urlparse
 # Create your models here.
+
 
 class User(AbstractBaseUser):
     first_name = models.CharField(max_length=30, help_text='enter your first name')
@@ -58,6 +58,42 @@ class User(AbstractBaseUser):
         """Is the user a member of staff?"""
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+    def full_name(self):
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        else:
+            return self.first_name
+
+    def header_image(self):
+        if self.header:
+            return self.header.url
+
+    def avatar_image(self):
+        if self.avatar:
+            return self.avatar.url
+
+    def user_website(self):
+        if self.website:
+            domain = urlparse(self.website)
+            return domain.netloc
+
+    def birthdate_format(self):
+        birthdate = self.date_of_birth.strftime('%B %d').replace('0', '')
+        return birthdate
+
+    def date_joined_format(self):
+        date_joined = self.date_joined.strftime('%B %Y')
+        return date_joined
+
+    def follower_count(self):
+        return self.follower.count()
+
+    def following_count(self):
+        return self.following.count()
+
+    def following_check(self, user):
+        return Relation.objects.filter(from_user=user, to_user=self).exists()
 
 
 class Relation(models.Model):

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
 from django.views.generic import View
 from django.http import HttpResponse
@@ -10,6 +10,7 @@ class X(View):
     template_name = 'x_page/x.html'
 
     def get(self, request):
+        print(self.request.user)
         return render(request, self.template_name)
 
 
@@ -63,14 +64,23 @@ class LoginView(View):
             user = authenticate(request, username=cd['username'], password=cd['password'])
             if user is not None:
                 login(request, user)
-                return HttpResponse('logged in')
+                return redirect('accounts:ProfileView', user.username)
         return render(request, self.template_name, {'form': form})
 
 
 class ProfileView(View):
     template_name = 'profile/profile.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('accounts:LoginView')
+        return super(ProfileView, self).dispatch(request, *args, **kwargs)
+
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
-        context = {'user': user}
+        if user.is_authenticated and user.following_check(self.request.user):
+            following = True
+        else:
+            following = False
+        context = {'user': user, 'following': following}
         return render(request, self.template_name, context)

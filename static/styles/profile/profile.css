@@ -1,6 +1,7 @@
 * {
   margin:0;
   padding:0;
+  position: relative;
 }
 :root {
     --bkg-color: #15202b;
@@ -28,6 +29,7 @@ body {
       Ubuntu, "Helvetica Neue", sans-serif;
   color:white;
   background-color:#15202b;
+  font-weight: 600;
 }
 .content {
   width:40em;
@@ -44,11 +46,18 @@ body {
   align-self:center;
   margin-left:0.8em;
   cursor:pointer;
-  position:relative;
+  margin-bottom: 40px;
+  position: sticky;
+  color: red;
 }
-.arrow > svg {
+.arrow-img {
   fill: #ffca58;
-  width: 2rem;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  margin-top: 25%;
+  margin-left:20%
+
 }
 .arrow::after {
   content:'';
@@ -67,7 +76,7 @@ body {
 }
 .header {
   font-size:1.1em;
-  font-weight: 800;
+  font-weight: 600;
   color:white;
 }
 .subtext {
@@ -83,6 +92,9 @@ body {
   height:100%;
   object-fit:cover;
 }
+.cover img::selection {
+  text-decoration: none;
+}
   .bio {
       padding: 15px 15px 0;
   }
@@ -90,24 +102,25 @@ body {
   .bio > div {
     margin-bottom: 12px;
     color: var(--primary-color);
-  }
+}
 .pre-bio {
-  display:flex;
+  display: flex;
   justify-content:flex-end;
-  position:relative;
+  position: static;
   margin-bottom:1em;
 }
 .avatar {
-    background-color: salmon;
     width: calc(130px - 2 * 4px);
     height: calc(130px - 2 * 4px);
     position: absolute;
-    bottom: -0em;
-    left: 0;
+    bottom: -3em;
     border-radius: 50%;
     border: 4px solid #15202b;
     background-size: cover;
     cursor: pointer;
+}
+.avatar::selection {
+  text-decoration: none;
 }
 .avatar:hover::after {
   content: "";
@@ -120,22 +133,25 @@ body {
 }
 
   .edit-profile {
-    font-weight: 600;
+    font-weight: 500;
     border: 1px solid gray;
     color: white;
     padding: 0.5em 1.2em;
     border-radius: 99999px;
-    cursor: pointer;
     background-color: rgba(var(--accent-color-rgb), 0);
     transition: background-color 0.2s;
+
   }
+
+.edit-profile::selection {
+  text-decoration: none;
+}
 
   .edit-profile:hover {
     background-color: rgb(22, 24, 28);
   }
   a {
     color: rgb(29, 155, 240);
-    text-decoration: none;
   }
 div.span {
 color: gray;
@@ -156,16 +172,101 @@ color: gray;
   text-align:center;
   padding:1em;
   position:relative;
-  cursor: pointer;
   transition: all 0.3s;
   background-color: rgba(var(--accent-color-rgb), 0);
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+
 }
   .tabs > div:hover {
-    color: #ffffff;
     background-color: rgb(22, 24, 28);
   }
 
   .selected {
-    color: #ffffff;
     border-bottom: 3px solid deepskyblue;
-  }
+    color: #ffffff;
+
+}
+
+.name-h2 {
+  font-weight: 700;
+}
+
+
+.small-username {
+  font-family: "IBM Plex Sans", sans-serif;
+  color: rgb(113, 118, 123);
+  font-weight: 500;
+}
+
+.user-bio {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Ubuntu, "Helvetica Neue", sans-serif;
+  font-weight: 400;
+}
+
+.loc-img {
+  width: 15px;
+  height: 15px;
+}
+
+.user-loc {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+  color: rgb(113, 118, 123);
+}
+
+.user-web {
+  margin-left: 15px;
+  text-decoration: none;
+  margin-top: -50px;
+}
+
+.link {
+  text-decoration: none;
+  justify-content: start;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+
+}
+
+
+.date-of-birth {
+  margin-left: 15px;
+}
+
+.date-joined {
+  margin-left: 15px;
+}
+
+.date {
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+  color:  rgb(113, 118, 123);
+}
+
+.follow1 {
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+  color:  rgb(113, 118, 123);
+}
+
+.follow2 {
+  font-weight: 400;
+  font-family: "IBM Plex Sans", sans-serif;
+  color:  rgb(113, 118, 123);
+}
+
+.tweets {
+  color: rgb(113, 118, 123);
+}
+
+.media {
+  color: rgb(113, 118, 123);
+}
+
+.likes {
+  color: rgb(113, 118, 123);
+}

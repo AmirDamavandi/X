@@ -1,37 +1,32 @@
 {% load static %}
-<body style="margin: 0;
-background-color:black ;
-font-family: Roboto;
+<body style="margin: 0;background-color:black ;font-family: Roboto,serif;>
+
 
     <div class="grid">
         <div class="sidebar">
             <div class="sidebar-container">
                 <div class="twitter-logo-container">
                     <div class="twitter-logo-container-2" id="home-icon-container">
-                        <img class="twitter-logo" src="{% static 'icons/x-icon/64cebe1d31f50e161e4c825a_X-logo-transparent-white-twitter.png' %}">
+                        <img class="twitter-logo" src="{% static 'icons/x-icon/64cebe1d31f50e161e4c825a_X-logo-transparent-white-twitter.png' %}" alt="X">
                     </div>
                       
                     
                 </div>
-{#                <a style="color:inherit;text-decoration: None" class="h-p" href="{% url 'accounts:home' %}">#}
+{#                <a style="color:inherit;text-decoration: None" class="h-p" href="{% url 'accounts:Home' %}">#}
                 <div class="home-container">
                     <div class="home-container-2" id="home-icon">
                         <div class="home-icon-container">
-                            <img class="home-icon" id="home-img" src="{% static 'twitter-icons/homepage.png' %}">
+                            <img class="home-icon" id="home-img" src="{% static 'twitter-icons/homepage.png' %}" alt="Home">
                         </div>
-                        <div class="home-icon-container">
-                            <div class="home-text">
-                                Home
-                            </div>
+                        <div class="home-icon-container"><div class="home-text">Home</div>
                         </div>
                     </div>
-                    
                 </div>
-                </a>
+{#                </a>#}
                 <div class="explore-container">
                     <div class="explore-container-2">
                         <div class="explore-icon-container">
-                            <img class="explore-icon" src="{% static 'twitter-icons/search-icon.png' %}">
+                            <img class="explore-icon" src="{% static 'twitter-icons/search-icon.png' %}" alt="Explore">
                         </div>
                         <div class="explore-icon-container">
                             <div class="explore-text">
@@ -44,7 +39,7 @@ font-family: Roboto;
                 <div class="notification-container">
                     <div class="notification-container-2">
                         <div class="notification-icon-container">
-                            <img class="notification-icon" src="{% static 'twitter-icons/notification-icon.png' %}">
+                            <img class="notification-icon" src="{% static 'twitter-icons/notification-icon.png' %}" alt="notification">
                         </div>
                         <div class="notification-icon-container">
                             <div class="notification-text">
@@ -57,7 +52,7 @@ font-family: Roboto;
                 <div class="message-container">
                     <div class="message-container-2">
                         <div class="message-icon-container">
-                            <img class="message-icon" src="{% static 'twitter-icons/message-icon.png' %}">
+                            <img class="message-icon" src="{% static 'twitter-icons/message-icon.png' %}" alt="message">
                         </div>
                         <div class="message-icon-container">
                             <div class="message-text">
@@ -70,7 +65,7 @@ font-family: Roboto;
                 <div class="bookmark-container">
                     <div class="bookmark-container-2">
                         <div class="bookmark-icon-container">
-                            <img class="bookmark-icon" src="{% static 'twitter-icons/bookmark-icon.png' %}">
+                            <img class="bookmark-icon" src="{% static 'twitter-icons/bookmark-icon.png' %}" alt="bookmark">
                         </div>
                         <div class="bookmark-icon-container">
                             <div class="bookmark-text">
@@ -83,7 +78,7 @@ font-family: Roboto;
                 <div class="list-container">
                     <div class="list-container-2">
                         <div class="list-icon-container">
-                            <img class="list-icon" src="{% static 'twitter-icons/lists-icon.png' %}">
+                            <img class="list-icon" src="{% static 'twitter-icons/lists-icon.png' %}" alt="list">
                         </div>
                         <div class="list-icon-container">
                             <div class="list-text">
@@ -93,10 +88,11 @@ font-family: Roboto;
                     </div>
                     
                 </div>
+                <a style="color: #ffffff; text-decoration: none" href="{% url 'accounts:ProfileView' active_user %}">
                 <div class="profile-container">
                     <div class="profile-container-2" id="profile-container-2">
                         <div class="profile-icon-container">
-                            <img class="profile-icon" id="profile-img" src="{% static 'twitter-icons/user-empty.png' %}">
+                            <img class="profile-icon" id="profile-img" src="{% static 'twitter-icons/user-empty.png' %}" alt="profile">
                         </div>
                         <div class="profile-icon-container">
                             <div class="profile-text">
@@ -104,12 +100,13 @@ font-family: Roboto;
                             </div>
                         </div>
                     </div>
-                    
+                
                 </div>
+                </a>                
                 <div class="more-container">
                     <div class="more-container-2">
                         <div class="more-icon-container">
-                            <img class="more-icon" src="{% static 'twitter-icons/more-icon.png' %}">
+                            <img class="more-icon" src="{% static 'twitter-icons/more-icon.png' %}" alt="more">
                         </div>
                         <div class="more-icon-container">
                             <div class="more-text">
@@ -121,39 +118,30 @@ font-family: Roboto;
                 </div>
             </div>
         </div>
+    </div>
+</body>
+
 <script>
-const homeIconContainer = document.getElementById('home-icon');
-const homeImg = document.getElementById('home-img');
+const profileContainer = document.getElementById('profile-container-2');
+const profileImg = document.getElementById('profile-img');
 
-const emptyHomeIconSrc = "{% static 'twitter-icons/homepage.png' %}";
-const filledHomeIconSrc = "{% static 'twitter-icons/homepage-filled.png' %}";
+const emptyProfileIconSrc = "{% static 'twitter-icons/user-empty.png' %}";
+const filledProfileIconSrc = "{% static 'twitter-icons/user.png' %}";
 
-{#const targetUrlPath = "{% url 'accounts:home' %}";#}
-
-
-{#if (window.location.pathname === targetUrlPath) {#}
-{#    homeImg.src = filledHomeIconSrc;#}
-{#} else {#}
-{#    homeImg.src = emptyHomeIconSrc;#}
-{#}#}
-{##}
-{##}
-{#homeIconContainer.addEventListener('click', () => {#}
-{#    window.location.href = targetUrlPath;#}
-{#});#}
+{% if active_user.is_authenticated %}
+const userUrlPath = "{% url 'accounts:ProfileView' active_user %}";
+if (window.location.pathname === userUrlPath) {
+    profileImg.src = filledProfileIconSrc;
+} else {
+    profileImg.src = emptyProfileIconSrc;
+}
 
 
-{#const profileContainer = document.getElementById('profile-container-2');#}
-{#const profileImg = document.getElementById('profile-img');#}
-{##}
-{#const emptyProfileIconSrc = "{% static 'twitter-icons/user-empty.png' %}";#}
-{#const filledProfileIconSrc = "{% static 'twitter-icons/user.png' %}";#}
-{##}
-{#profileContainer.addEventListener('click', () => {#}
-{#    if (profileImg.src.includes('{% static 'twitter-icons/user-empty.png' %}')) {#}
-{#        profileImg.src = filledProfileIconSrc;#}
-{#    } else {#}
-{#        profileImg.src = emptyProfileIconSrc;#}
-{#    }#}
+profileContainer.addEventListener('click', () => {
+    window.location.href = userUrlPath;
 });
+{% endif %} 
+
+
+
 </script>

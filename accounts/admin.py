@@ -2,7 +2,6 @@ from django.contrib import admin
 from django import forms
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.core.exceptions import ValidationError
 from .models import *
 
 # Register your models here.
@@ -67,10 +66,14 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = [
         (None, {'fields': ['email', 'password']}),
         ('Personal info', {'fields': [
-            'first_name', 'last_name', 'username', 'phone_number', 'location', 'website',
-            'gender', 'bio', 'account_type',
+            'first_name', 'last_name',
+            'gender', 'date_of_birth'
         ]}),
-        ('Verify', {'fields': ['is_verified']}),
+        ('Account info', {'fields': [
+            'header', 'avatar', 'username', 'phone_number', 'account_type', 'bio',
+            'location', 'website', 'is_suspended'
+        ]}),
+        ('Verify', {'fields': ['is_verified', 'is_active']}),
         ('Permissions', {'fields': ['is_admin']}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -80,7 +83,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 'classes': ['wide'],
-                'fields': ['username', 'email', 'password1', 'password2'],
+                'fields': ['first_name', 'username', 'email', 'password1', 'password2'],
             },
         ),
     ]
