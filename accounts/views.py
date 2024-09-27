@@ -89,15 +89,21 @@ class ProfileView(View):
 
 class FollowView(View):
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     if not request.user.is_authenticated:
-    #         return redirect('accounts:LoginView')
-    #     return super(FollowView, self).dispatch(request, *args, **kwargs)
-
     def post(self, request, username):
         query = Relation.objects.filter(from_user__username=self.request.user, to_user__username=username)
         following_user = User.objects.get(username=username)
         if not query.exists():
             follow = Relation(from_user=self.request.user, to_user=following_user)
             follow.save()
+        return redirect('accounts:ProfileView', username)
+
+
+class UnfollowView(View):
+
+    def post(self, request, username):
+        unfollowing_user = User.objects.get(username=username)
+        query = Relation.objects.filter(from_user=self.request.user, to_user=unfollowing_user)
+        if query.exists():
+            unfollow = Relation.objects.get(from_user=self.request.user, to_user=unfollowing_user)
+            unfollow.delete()
         return redirect('accounts:ProfileView', username)

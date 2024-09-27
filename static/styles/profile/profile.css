@@ -310,3 +310,23 @@ color: gray;
     color: rgb(244, 33, 46);
     font-weight: 600;
 }
+
+.arrow *::selection {
+    text-decoration: none;
+}
+
+.verified-icon::selection {
+    text-decoration: none;
+}
+
+.loc-img::selection {
+    text-decoration: none;
+}
+
+.link *::selection{
+    text-decoration: none;
+}
+
+.date *::selection {
+    text-decoration: none;
+}
