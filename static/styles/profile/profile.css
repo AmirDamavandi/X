@@ -270,3 +270,67 @@ color: gray;
 .likes {
   color: rgb(113, 118, 123);
 }
+
+.following-user {
+    font-weight: 500;
+    border: 1px solid gray;
+    color: white;
+    padding: 0.5em 1.2em;
+    border-radius: 9999999px;
+
+}
+
+.following-user::selection {
+    text-decoration: none;
+}
+
+
+.unfollowing-user {
+    font-weight: 500;
+    border: 1px solid gray;
+    color: white;
+    padding: 0.5em 1.2em;
+    border-radius: 999999px;
+    background-color: rgba(var(--accent-color-rgb), 0);
+    transition: background-color 0.2s;
+
+}
+
+.unfollowing-user:hover {
+    border: 1px solid rgb(244, 33, 46);
+    background-color: rgb(244, 33, 46);
+    transition: background-color 0.1s ease;
+
+
+}
+
+.unfollowing-user:after {
+    content: "Following";
+
+}
+
+.unfollowing-user:hover::after {
+  content: "Unfollow";
+    color: rgb(244, 33, 46);
+    font-weight: 600;
+}
+
+.arrow *::selection {
+    text-decoration: none;
+}
+
+.verified-icon::selection {
+    text-decoration: none;
+}
+
+.loc-img::selection {
+    text-decoration: none;
+}
+
+.link *::selection{
+    text-decoration: none;
+}
+
+.date *::selection {
+    text-decoration: none;
+}

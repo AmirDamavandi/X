@@ -24,7 +24,7 @@
     {% endif %} 
     
   </div>
-  
+
 <!--  Bio section  -->
   <div class="bio">
     <div>
@@ -38,9 +38,20 @@
     {% if user == active_user %}
         <a methods="post" class="edit-profile">Edit profile</a>
     {% elif not following %}
-        <div style="background-color: #ffffff; color: black" class="edit-profile">Follow</div>
+        <form action="{% url 'accounts:FollowView' user.username %}" method="post">
+            {% csrf_token %}
+            <button type="submit" style="background-color: #ffffff; text-decoration: none; cursor: pointer;
+            color: black" class="following-user">
+                Follow
+            </button>
+        </form>
     {% elif following %}
-        <div style="background-color: black; color: #ffffff" class="edit-profile">Following</div>
+        <form action="{% url 'accounts:UnFollowView' user.username %}" method="post">
+            {% csrf_token %}
+            <button type="submit" style="background-color: black; text-decoration: none; cursor: pointer;
+            color: #ffffff" class="unfollowing-user">
+            </button>
+        </form>
     {% endif %} 
     </div>
     

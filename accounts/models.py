@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -58,6 +60,23 @@ class User(AbstractBaseUser):
         """Is the user a member of staff?"""
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+    def clean(self):
+        username_pattern = r'^[a-zA-Z0-9._]{3,30}$'
+        if not re.match(username_pattern, self.username):
+            raise ValidationError('Username must contain only letters, numbers underscore and dot')
+        else:
+            self.username = self.username.lower()
+
+        password_pattern = r'^[a-zA-Z0-9@$%&*_=+\']{6,128}$'
+        if not re.match(password_pattern, self.password):
+            raise ValidationError(
+                'Password must contain only letters(a-z, A-Z), numbers and some special characters, yours is invalid'
+            )
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     def full_name(self):
         if self.first_name and self.last_name:

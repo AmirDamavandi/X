@@ -3,6 +3,7 @@ from .forms import *
 from django.views.generic import View
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
+from .models import *
 # Create your views here.
 
 
@@ -84,3 +85,25 @@ class ProfileView(View):
             following = False
         context = {'user': user, 'following': following}
         return render(request, self.template_name, context)
+
+
+class FollowView(View):
+
+    def post(self, request, username):
+        query = Relation.objects.filter(from_user__username=self.request.user, to_user__username=username)
+        following_user = User.objects.get(username=username)
+        if not query.exists():
+            follow = Relation(from_user=self.request.user, to_user=following_user)
+            follow.save()
+        return redirect('accounts:ProfileView', username)
+
+
+class UnfollowView(View):
+
+    def post(self, request, username):
+        unfollowing_user = User.objects.get(username=username)
+        query = Relation.objects.filter(from_user=self.request.user, to_user=unfollowing_user)
+        if query.exists():
+            unfollow = Relation.objects.get(from_user=self.request.user, to_user=unfollowing_user)
+            unfollow.delete()
+        return redirect('accounts:ProfileView', username)
