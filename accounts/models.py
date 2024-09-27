@@ -135,3 +135,26 @@ class Relation(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, *kwargs)
+
+
+class ConnectPeople(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='self')
+    linked_user = models.ForeignKey(User, related_name='people', on_delete=models.CASCADE)
+    link_reason = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.linked_user} linked to {self.user}'
+
+    class Meta:
+        unique_together = (('user', 'linked_user'),)
+        verbose_name = _('connect people')
+        verbose_name_plural = _('connect people')
+        
+    def clean(self):
+        if self.user == self.linked_user:
+            raise ValidationError('users cannot link to themselves')
+        
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, *kwargs)
+
