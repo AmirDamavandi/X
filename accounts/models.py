@@ -68,6 +68,12 @@ class User(AbstractBaseUser):
         else:
             self.username = self.username.lower()
 
+        password_pattern = r'^[a-zA-Z0-9@$%&*_=+\']{6,128}$'
+        if not re.match(password_pattern, self.password):
+            raise ValidationError(
+                'Password must contain only letters(a-z, A-Z), numbers and some special characters, yours is invalid'
+            )
+
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)

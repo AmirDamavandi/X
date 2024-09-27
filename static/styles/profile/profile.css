@@ -278,7 +278,11 @@ color: gray;
     padding: 0.5em 1.2em;
     border-radius: 9999999px;
 
-  }
+}
+
+.following-user::selection {
+    text-decoration: none;
+}
 
 
 .unfollowing-user {
