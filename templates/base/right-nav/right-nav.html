@@ -100,131 +100,84 @@
                                 </div>
                             </div>
                         </div>  
+                        {% if users %}
                         <div class="who-to-follow">
                             <div class="follow-title">
                                 Who to follow
                             </div>
-                            <div class="follow-list-container">  
-                                
-                                <div class="follow-1">
-                                    <div class="follow-container-profile-container">
-                                        <img src="{% static 'icons/x-icon/billgates-profile.jpg' %}" class="follow-profile-1">
-                                        <div class="profile-container-tooltip">
-                                            <div class="channel-tooltip">
-                                                <img class="follow-profile-tooltip" src="{% static 'icons/x-icon/billgates-profile.jpg' %}">
-                                                <button class="follow-button-tooltip">Follow</button>
-                                            </div>   
-                                            
-                                            <div>
+                            {% for user in users %}
+                                <div class="follow-list-container">  
+                                    
+                                    <div class="follow-1">
+                                        <div class="follow-container-profile-container">
+                                        {% if user.avatar %}
+                                            <img src="{{ user.avatar.url }}" class="follow-profile-1" alt="user avatar">
+                                        {% else %}
+                                            <img src="/../static/icons/x-icon/default_profile_400x400.png" class="follow-profile-1" alt="user avatar">
+                                        {% endif %}
+                                            <div class="profile-container-tooltip">
+                                                <div class="channel-tooltip">
+                                                    {% if user.avatar %}
+                                                    	<img class="follow-profile-tooltip" src="{{ user.avatar.url }}" alt="user avatar">
+                                                    {% else %}
+                                                        <img class="follow-profile-tooltip" src="/../static/icons/x-icon/default_profile_400x400.png" alt="user avatar">
+                                                    {% endif %} 
+                                                    <form action="{% url 'accounts:FollowView' user.username %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="follow-button-tooltip">Follow</button>
+                                                    </form>
+                                                </div>   
+                                                
                                                 <div>
-                                                    <span class="follow-name-tooltip">Bill Gates</span><img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
-                                                    <span class="follow-username-tooltip">@BillGates</span>
-                                                </div>
-                                                <div class="follow-tooltip-content">
-                                                    Sharing things I'm learning through my foundation work and other interests.
-                                                </div>
-                                                <div class="followers-following">
-                                                    <b>476</b> <span class="followers-count-tooltip">Following</span>
-                                                    <b>60.5M</b> <span class="followers-count-tooltip">Followers</span>
+                                                    <div>
+                                                        <span class="follow-name-tooltip">{{ user.full_name }}</span>
+                                                        {% if user.is_verified %}
+                                                        	<img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
+                                                        {% endif %} 
+                                                        
+                                                        <span class="follow-username-tooltip">@{{ user.username }}</span>
+                                                    </div>
+                                                    <div class="follow-tooltip-content">
+                                                        {% if user.bio %}
+                                                        	{{ user.bio }}
+                                                        {% else %}
+                                                            <br/>
+                                                        {% endif %} 
+                                                        
+                                                    </div>
+                                                    <div class="followers-following">
+                                                        <b>{{ user.following_count }}</b> <span class="followers-count-tooltip">Following</span>
+                                                        <b>{{ user.follower_count }}</b> <span class="followers-count-tooltip">Followers</span>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            
+                                        </div>
+                                        <div>
+                                            {% if user.is_verified %}
+                                                <img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon" alt="verified">
+                                            {% endif %} 
+                                            <span class="follow-name">{{ user.full_name }}</span>
+                                            <span class="follow-username">@{{ user.username }}</span>
                                         </div>
                                         
-                                    </div>
-                                    <div>
-                                        <span class="follow-name">Bill Gates</span><img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
-                                        <span class="follow-username">@BillGates</span>
-                                    </div>
-                                    
-                                    <div>
-                                        <button class="follow-button">
-                                            Follow
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="follow-list-container-2">  
-                                
-                                <div class="follow-2">
-                                    <div class="follow-container-profile-container">
-                                        <img src="{% static 'icons/x-icon/katypery-profile.jpg' %}" class="follow-profile-1">
-                                        <div class="profile-container-tooltip-2">
-                                            <div class="channel-tooltip">
-                                                <img class="follow-profile-tooltip" src="{% static 'icons/x-icon/katypery-profile.jpg' %}">
-                                                <button class="follow-button-tooltip-2">Follow</button>
-                                            </div>   
-                                            
-                                            <div>
-                                                <div>
-                                                    <span class="follow-name-tooltip">KATY PERRY</span><img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
-                                                    <span class="follow-username-tooltip">@katyperry</span>
-                                                </div>
-                                                <div class="follow-tooltip-content">
-                                                    <a class="katy-link">linktr.ee/katyperry</a>
-                                                </div>
-                                                <div class="followers-following">
-                                                    <b>244</b> <span class="followers-count-tooltip">Following</span>
-                                                    <b>108.9M</b> <span class="followers-count-tooltip">Followers</span>
-                                                </div>
-                                            </div>
+                                        <div>
+                                            <form action="{% url 'accounts:FollowView' user.username %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" class="follow-button" value="Follow">
+                                            </form>
                                         </div>
                                     </div>
-                                    <div>
-                                        <span class="follow-name">KATY PERRY</span><img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
-                                        <span class="follow-username">@katyperry</span>
-                                    </div>
-                                    
-                                    <div>
-                                        <button class="follow-button-2">
-                                            Follow
-                                        </button>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="follow-list-container-3">  
-                                
-                                <div class="follow-2">
-                                    <div class="follow-container-profile-container">
-                                        <img src="{% static 'icons/x-icon/twitter-profile.jpg' %}" class="follow-profile-1">
-                                        <div class="profile-container-tooltip-3">
-                                            <div class="channel-tooltip">
-                                                <img class="follow-profile-tooltip" src="{% static 'icons/x-icon/twitter-profile.jpg' %}">
-                                                <button class="follow-button-tooltip-3">Follow</button>
-                                            </div>   
-                                            
-                                            <div>
-                                                <div>
-                                                    <span class="follow-name-tooltip">Twitter</span><img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
-                                                    <span class="follow-username-tooltip">@Twitter</span>
-                                                </div>
-                                                <div class="follow-tooltip-content">
-                                                    What's happening?!
-                                                </div>
-                                                <div class="followers-following">
-                                                    <b>6</b> <span class="followers-count-tooltip">Following</span>
-                                                    <b>63.6M</b> <span class="followers-count-tooltip">Followers</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span class="follow-name">Twitter</span><img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
-                                        <span class="follow-username">@Twitter</span>
-                                    </div>
-                                    
-                                    <div>
-                                        <button class="follow-button-3">
-                                            Follow
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                        {% endfor %}
+                        
                             <div class="show-more-container">
                                 <div class="show-more-2">
                                     Show more
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                     
                 </div>

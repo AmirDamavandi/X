@@ -98,3 +98,8 @@ admin.site.register(User, UserAdmin)
 @admin.register(Relation)
 class RelationAdmin(admin.ModelAdmin):
     list_display = ['from_user', 'to_user', 'followed_at']
+
+
+@admin.register(ConnectPeople)
+class ConnectPeopleAdmin(admin.ModelAdmin):
+    list_display = ['user', 'linked_user', 'link_reason']

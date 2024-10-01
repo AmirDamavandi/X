@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from .models import *
+from .context_processor import suggest_to_follow, active_user
 # Create your views here.
 
 

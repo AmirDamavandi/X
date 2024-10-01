@@ -61,22 +61,24 @@ class User(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
-    def clean(self):
-        username_pattern = r'^[a-zA-Z0-9._]{3,30}$'
-        if not re.match(username_pattern, self.username):
-            raise ValidationError('Username must contain only letters, numbers underscore and dot')
-        else:
-            self.username = self.username.lower()
+    # def clean(self):
+        # username_pattern = r'^[a-zA-Z0-9._]{3,30}$'
+        # if not re.match(username_pattern, self.username):
+        #     raise ValidationError('Username must contain only letters, numbers underscore and dot')
+        # if re.match(username_pattern, self.username):
+        #     self.username = self.username.lower()
 
-        password_pattern = r'^[a-zA-Z0-9@$%&*_=+\']{6,128}$'
-        if not re.match(password_pattern, self.password):
-            raise ValidationError(
-                'Password must contain only letters(a-z, A-Z), numbers and some special characters, yours is invalid'
-            )
+        # password_pattern = r'^[a-zA-Z0-9@$%&*_=+\']{6,128}$'
+        # if not re.match(password_pattern, self.password):
+        #     raise ValidationError(
+        #         'Password must contain only letters(a-z, A-Z), numbers and some special characters, yours is invalid'
+        #     )
+        # else:
+        #     self.password = self.password
 
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.clean()
+    #     super().save(*args, **kwargs)
 
     def full_name(self):
         if self.first_name and self.last_name:
@@ -121,7 +123,7 @@ class Relation(models.Model):
     followed_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.from_user} followed {self.to_user}'
+        return f'{self.to_user}'
 
     class Meta:
         unique_together = (('from_user', 'to_user'),)
@@ -135,3 +137,28 @@ class Relation(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, *kwargs)
+
+
+class ConnectPeople(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='self')
+    linked_user = models.ForeignKey(User, related_name='people', on_delete=models.CASCADE)
+    link_reason = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.linked_user} linked to {self.user}'
+
+    class Meta:
+        unique_together = (('user', 'linked_user'),)
+        verbose_name = _('connect people')
+        verbose_name_plural = _('connect people')
+        
+    def clean(self):
+        if self.user == self.linked_user:
+            raise ValidationError('users cannot link to themselves')
+        elif ConnectPeople.objects.filter(user=self.user).count() >= 5:
+            raise ValidationError('user cannot have more than 5 linked user')
+        
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, *kwargs)
+
