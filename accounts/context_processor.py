@@ -1,13 +1,16 @@
 from .models import *
 import random
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 def active_user(request):
     context = {'active_user': request.user}
     return context
 
-
 def suggest_to_follow(request):
+    if not request.user.is_authenticated:
+        return {}
     authenticated_user = request.user
     followers = None
     authenticated_user_followings = []

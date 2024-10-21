@@ -1,9 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
 from django.views.generic import View
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from .models import *
+from django.urls import reverse
 from .context_processor import suggest_to_follow, active_user
 # Create your views here.
 
@@ -11,8 +13,12 @@ from .context_processor import suggest_to_follow, active_user
 class X(View):
     template_name = 'x_page/x.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('accounts:ProfileView', self.request.user.username)
+        return super(X, self).dispatch(request, *args, **kwargs)
+
     def get(self, request):
-        print(self.request.user)
         return render(request, self.template_name)
 
 
@@ -22,7 +28,7 @@ class SignUpView(View):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponse('you don\' need to sign up, you authenticated already')
+            return redirect('accounts:ProfileView', self.request.user.username)
         return super(SignUpView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
@@ -51,12 +57,13 @@ class LoginView(View):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponse('you are already logged in')
+            return redirect('accounts:ProfileView', self.request.user.username)
         return super(LoginView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
         form = self.login_form()
         context = {'form': form}
+        print(self.request.GET)
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -70,13 +77,8 @@ class LoginView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class ProfileView(View):
+class ProfileView(LoginRequiredMixin, View):
     template_name = 'profile/profile.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('accounts:LoginView')
-        return super(ProfileView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
@@ -88,7 +90,8 @@ class ProfileView(View):
         return render(request, self.template_name, context)
 
 
-class FollowView(View):
+class FollowView(LoginRequiredMixin, View):
+
 
     def post(self, request, username):
         query = Relation.objects.filter(from_user__username=self.request.user, to_user__username=username)
@@ -99,7 +102,7 @@ class FollowView(View):
         return redirect('accounts:ProfileView', username)
 
 
-class UnfollowView(View):
+class UnfollowView(LoginRequiredMixin, View):
 
     def post(self, request, username):
         unfollowing_user = User.objects.get(username=username)
