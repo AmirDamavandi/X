@@ -35,7 +35,7 @@ class Tweet(models.Model):
     def clean(self):
         if self.comment and self.quote_tweet:
             raise ValidationError('you cannot comment and quote a tweet at the same time')
-        if Tweet.objects.filter(quote_tweet=self.quote_tweet, user=self.user).exists():
+        if Tweet.objects.filter(quote_tweet__isnull=False, quote_tweet=self.quote_tweet, user=self.user).exists():
             raise ValidationError('you cannot retweet a tweet twice')
 
     def save(self, *args, **kwargs):
@@ -58,6 +58,18 @@ class Tweet(models.Model):
         verbose_name = _('Tweet',)
         verbose_name_plural = _('Tweets',)
 
+
+class Hashtag(models.Model):
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='hashtags')
+    hashtag = models.SlugField(max_length=100, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.hashtag
+
+    class Meta:
+        verbose_name = _('Hashtag',)
+        verbose_name_plural = _('Hashtags',)
 
 
 class View(models.Model):
