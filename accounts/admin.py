@@ -60,7 +60,9 @@ class UserAdmin(BaseUserAdmin):
     # that reference specific fields on auth.User.
     list_display = [
         'first_name', 'last_name', 'username', 'email', 'date_joined',
-        'phone_number', 'is_verified', 'gender', 'is_suspended', 'is_admin'
+        'phone_number', 'is_verified', 'gender', 'is_suspended', 'is_admin',
+        'following_count', 'follower_count', 'retweet_count', 'like_count',
+        'bookmark_count', 'comment_count'
     ]
     list_filter = ['is_admin', 'is_verified', 'is_suspended', 'date_joined', 'date_of_birth']
     fieldsets = [

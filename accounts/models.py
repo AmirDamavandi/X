@@ -1,11 +1,11 @@
-import re
-
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.template.defaulttags import comment
 from django.utils.translation import gettext_lazy as _
 from .manager import MyUserManager
 from django.core.exceptions import ValidationError
 from urllib.parse import urlparse
+from tweets.models import View as PostView, Tweet, Like, Retweet, Bookmark
 # Create your models here.
 
 
@@ -31,6 +31,7 @@ class User(AbstractBaseUser):
     is_suspended = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    relation = models.ManyToManyField('Relation', related_name='user_following')
     date_joined = models.DateTimeField(auto_now_add=True)
 
     objects = MyUserManager()
@@ -108,13 +109,32 @@ class User(AbstractBaseUser):
         return date_joined
 
     def follower_count(self):
-        return self.follower.count()
+        followers = self.follower.count()
+        return followers
 
     def following_count(self):
-        return self.following.count()
+        followings = self.following.count()
+        return followings
 
     def following_check(self, user):
-        return Relation.objects.filter(from_user=user, to_user=self).exists()
+        relation_check = Relation.objects.filter(from_user=user, to_user=self).exists()
+        return relation_check
+
+    def retweet_count(self):
+        retweets = Retweet.objects.filter(user=self).count()
+        return retweets
+
+    def like_count(self):
+        likes = Like.objects.filter(user=self).count()
+        return likes
+
+    def bookmark_count(self):
+        bookmarks = Bookmark.objects.filter(user=self).count()
+        return bookmarks
+
+    def comment_count(self):
+        comments = Tweet.objects.filter(user=self, comment__isnull=False).count()
+        return comments
 
 
 class Relation(models.Model):
@@ -128,11 +148,12 @@ class Relation(models.Model):
     class Meta:
         unique_together = (('from_user', 'to_user'),)
         verbose_name = _('relation')
-        verbose_name_plural = _('relations')
 
     def clean(self):
         if self.from_user == self.to_user:
             raise ValidationError('users cannot follow themselves')
+        if Relation.objects.filter(from_user=self.from_user, to_user=self.to_user).exists():
+            raise ValidationError('user follows user already')
 
     def save(self, *args, **kwargs):
         self.clean()

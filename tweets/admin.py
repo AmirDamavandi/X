@@ -8,11 +8,13 @@ from .models import *
 @admin.register(Tweet)
 class TweetAdmin(admin.ModelAdmin):
     list_display = [
-        'user', 'tweet', 'status', 'comment', 'quote_tweet', 'created_at',
+        'user', 'tweet', 'status', 'comment', 'quote_tweet',
+        'like_count', 'retweet_count', 'view_count',
+        'bookmark_count', 'created_at',
     ]
 
 
-@admin.register(PostView)
+@admin.register(View)
 class PostViewAdmin(admin.ModelAdmin):
     list_display = [
         'user', 'tweet', 'created_at',
