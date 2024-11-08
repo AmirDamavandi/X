@@ -22,7 +22,7 @@ class Tweet(models.Model):
         blank=True,
         null=True
     )
-    views = models.ManyToManyField(settings.AUTH_USER_MODEL, through='PostView', related_name='views')
+    views = models.ManyToManyField(settings.AUTH_USER_MODEL, through='View', related_name='views')
     retweet = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Retweet', related_name='retweets')
     like = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like', related_name='likes')
     bookmark = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Bookmark', related_name='bookmarks')
@@ -42,13 +42,25 @@ class Tweet(models.Model):
         self.clean()
         super().save(*args, **kwargs)
 
+    def view_count(self):
+        return View.objects.filter(tweet=self).count()
+
+    def like_count(self):
+        return Like.objects.filter(tweet=self).count()
+
+    def retweet_count(self):
+        return Retweet.objects.filter(tweet=self).count()
+
+    def bookmark_count(self):
+        return Bookmark.objects.filter(tweet=self).count()
+
     class Meta:
         verbose_name = _('Tweet',)
         verbose_name_plural = _('Tweets',)
 
 
 
-class PostView(models.Model):
+class View(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='post_views')
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='tweet_views')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -57,8 +69,8 @@ class PostView(models.Model):
         return f'{self.user} viewed {self.tweet}'
 
     class Meta:
-        verbose_name = _('Post View',)
-        verbose_name_plural = _('Post Views',)
+        verbose_name = _('View',)
+        verbose_name_plural = _('Views',)
 
 
 class Retweet(models.Model):
