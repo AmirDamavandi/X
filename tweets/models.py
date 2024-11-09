@@ -1,9 +1,11 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
+from django.db.transaction import commit
+from django.template.context_processors import media
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
-
+from django.contrib.auth.models import User
 
 class Tweet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tweets')
@@ -40,7 +42,7 @@ class Tweet(models.Model):
 
     def save(self, *args, **kwargs):
         self.clean()
-        super().save(*args, **kwargs)
+        super(Tweet, self).save(*args, **kwargs)
 
     def view_count(self):
         return View.objects.filter(tweet=self).count()
@@ -70,6 +72,26 @@ class Hashtag(models.Model):
     class Meta:
         verbose_name = _('Hashtag',)
         verbose_name_plural = _('Hashtags',)
+
+class Media(models.Model):
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='media')
+    media = models.FileField(upload_to='tweets/', max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.media.name
+
+    def clean(self):
+        if Media.objects.filter(tweet=self.tweet).count() >= 4 and not self.pk:
+            raise ValidationError('tweet can have maximum 4 media')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(Media, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _('Media',)
+        verbose_name_plural = _('Medias',)
 
 
 class View(models.Model):
