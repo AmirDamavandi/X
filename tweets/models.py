@@ -1,11 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
-from django.db.transaction import commit
-from django.template.context_processors import media
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import FileExtensionValidator
 # Create your models here.
-from django.contrib.auth.models import User
 
 class Tweet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tweets')
@@ -75,7 +73,10 @@ class Hashtag(models.Model):
 
 class Media(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='media')
-    media = models.FileField(upload_to='tweets/', max_length=300)
+    media = models.FileField(
+        upload_to='tweets/', max_length=300,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif', 'jpeg', 'mp4'])]
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
