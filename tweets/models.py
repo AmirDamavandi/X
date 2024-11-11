@@ -54,6 +54,9 @@ class Tweet(models.Model):
     def bookmark_count(self):
         return Bookmark.objects.filter(tweet=self).count()
 
+    def user_tweeted(self):
+        return self.user
+
     class Meta:
         verbose_name = _('Tweet',)
         verbose_name_plural = _('Tweets',)

@@ -1,0 +1,134 @@
+{% extends 'base/base/base.html' %}
+{% load static %}
+
+
+{% block title %}
+	X / Home
+{% endblock %}
+
+{% block content %}
+	<div class="home">
+                <div class="home-title">
+                    Home
+                    <div class="top-tweet-container">
+                        <img src="{% static 'twitter-icons/top-tweet_prev_ui.png' %}" class="top-tweet">
+                    </div>
+                </div>
+                <div class="tweet-box">
+                    <div class="text-boxx">
+                        <img src="{% static 'twitter-icons/my-profile.jpg' %}" class="my-profile">
+                    </div>
+                    <div class="text-boxx">
+                        <input type="text" placeholder="What's happening?" class="text-box">
+                    </div>
+                </div>
+                <div class="icons">
+                    <div>
+                        <img class="media-icon" src="{% static 'twitter-icons/media-icon.png' %}">  
+                    </div>
+                    <div>
+                        <img class="gif-icon" src="{% static 'twitter-icons/gif-icon.png' %}">
+                    </div>
+                    <div>
+                        <img class="poll-icon" src="{% static 'twitter-icons/poll-icon.png' %}">
+                    </div>
+                    <div>
+                        <img class="emoji-icon" src="{% static 'twitter-icons/emoji-icon.png' %}">
+                    </div>
+                    <div>
+                        <img class="schedule-icon" src="{% static 'twitter-icons/schedule-icon.png' %}">
+                    </div>
+                    <div>
+                        <img class="location-icon" src="{% static 'twitter-icons/location-icon.png' %}">
+                    </div>
+                    <div class="tweet-button-container">
+                        <button class="tweet-button">
+                            Tweet
+                        </button>
+                    </div>
+                </div>
+        {% for tweet in tweets %}    
+                <div class="flexbox">
+                    <div class="content">
+                        <div class="content-title-profile1">
+                            <div class="content-title-profile-1">
+                                <img src="{{ tweet.user_tweeted.avatar_image }}" class="post-profile">
+                                <div class="content-tooltip1">
+                                    <div class="content-tooltip-1">
+                                        <img class="follow-profile-tooltip" src="{{ tweet.user_tweeted.avatar_image }}">
+                                        <button class="content-follow-button-tooltip-1">Follow</button>
+                                    </div>   
+                                    
+                                    <div>
+                                        <div>
+                                            {% if tweet.user_tweeted.is_verified %}
+                                                    <span class="follow-name-tooltip">{{ tweet.user_tweeted.full_name }}</span><img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
+                                            {% endif %} 
+                                            <span class="follow-username-tooltip">@{{ tweet.user_tweeted }}</span>
+                                        </div>
+                                        <div class="follow-tooltip-content-1">
+                                            {{ tweet.user_tweeted.bio }}
+                                        </div>
+                                        <div class="followers-following">
+                                            <b>{{ tweet.user_tweeted.following_count }}</b> <span class="followers-count-tooltip">Following</span>
+                                            <b>{{ tweet.user_tweeted.follower_count }}</b> <span class="followers-count-tooltip">Followers</span>
+                                        </div>
+                                    
+                                    </div>
+    
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <div class="content-title">
+                                                
+                            <div class="title-container">
+                                <span class="post-title">{{ tweet.user_tweeted.full_name }}</span>
+                                <img src="{% static 'twitter-icons/verified.png' %}" class="verified">
+                                <span class="title-date">@{{ tweet.user_tweeted }} <b>&#183;</b> Sep 17 </span>
+                                <span class="dot">...</span>
+                            </div>
+                                    
+
+                            <div class="content--title">
+                                {{ tweet.tweet }}
+                            </div>
+                            
+
+                            <div class="post-container">
+                            <img src="twitter-posts/tesla-post.jpg" class="content-post">
+                            </div>
+                            <div class="line-icon-container">
+                                <div class="line-icon-1">
+                                    <div class="line-icon1">
+                                        <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="count1">882</div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="line-icon-2">
+                                    <div class="line-icon2">
+                                        <div class="retweet-icon"><img src="{% static 'twitter-icons/retweet-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="count2">1,544</div>
+                                    </div>
+                                </div>
+                                <div class="line-icon-3">
+                                    <div class="line-icon3">
+                                        <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="count3">16.4K</div>
+                                    </div>
+                                </div>
+                                <div class="line-icon-share">
+                                    <div class="share-icon"><img src="{% static 'twitter-icons/share-icon.png' %}" class="line-icons-share"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    {% endfor %}
+            </div>
+
+{% endblock %}
