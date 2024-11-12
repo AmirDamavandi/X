@@ -87,7 +87,7 @@
                             <div class="title-container">
                                 <span class="post-title">{{ tweet.user_tweeted.full_name }}</span>
                                 <img src="{% static 'twitter-icons/verified.png' %}" class="verified">
-                                <span class="title-date">@{{ tweet.user_tweeted }} <b>&#183;</b> Sep 17 </span>
+                                <span class="title-date">@{{ tweet.user_tweeted }} <b>&#183;</b> {{ tweet.published_time }} </span>
                                 <span class="dot">...</span>
                             </div>
                                     

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
@@ -56,6 +57,29 @@ class Tweet(models.Model):
 
     def user_tweeted(self):
         return self.user
+
+    def published_time(self):
+        created_at = self.created_at
+        created_at = datetime(
+            created_at.year, created_at.month, created_at.day, created_at.hour, created_at.minute, created_at.second
+        )
+        duration = datetime.now() - created_at
+        since_tweeted = created_at.strftime('%b %d, %Y')
+        if duration.days < 1 and duration.seconds < 60:
+            since_tweeted = f'{duration.seconds}s'
+        elif duration.days < 1 and duration.seconds < 3600:
+            minutes = duration.seconds // 60
+            since_tweeted = f'{minutes}m'
+        elif duration.days < 1 and duration.seconds < 86400:
+            hours = duration.seconds // 3600
+            since_tweeted = f'{hours}h'
+        elif duration.days == 1:
+            since_tweeted = f'{duration.days}d'
+        elif duration.days > 1 and created_at.year == datetime.now().year:
+            since_tweeted = f'{created_at.strftime("%b %d").replace('0', '')}'
+        elif duration.days > 1 and created_at.year < datetime.now().year:
+            since_tweeted = f'{created_at.strftime("%b %d, %Y")}'
+        return since_tweeted
 
     class Meta:
         verbose_name = _('Tweet',)
