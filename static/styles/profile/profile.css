@@ -31,12 +31,12 @@ body {
   background-color:#15202b;
   font-weight: 600;
 }
-.content {
+.content-profile-300 {
   width:40em;
   margin: 0 auto;
   border:1px solid #2F3336;
 }
-.navigation {
+.navigation-profile-300 {
   display:grid;
   grid-template: auto auto / 4rem auto;
   padding:.5em;
@@ -74,12 +74,12 @@ body {
 .arrow:hover::after {
   opacity:0.2;
 }
-.header {
+.header-profile-300 {
   font-size:1.1em;
   font-weight: 600;
   color:white;
 }
-.subtext {
+.subtext-profile-300 {
   font-size:0.85em;
   color:#5B6F83;
 }

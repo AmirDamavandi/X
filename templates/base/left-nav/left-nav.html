@@ -12,9 +12,9 @@
                       
                     
                 </div>
-{#                <a style="color:inherit;text-decoration: None" class="h-p" href="{% url 'accounts:Home' %}">#}
+                <a style="text-decoration: none; color: #ffffff" href="{% url 'tweets:Home' %}">
                 <div class="home-container">
-                    <div class="home-container-2" id="home-icon">
+                    <div class="home-container-2" id="home-container-2">
                         <div class="home-icon-container">
                             <img class="home-icon" id="home-img" src="{% static 'twitter-icons/homepage.png' %}" alt="Home">
                         </div>
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 </div>
-{#                </a>#}
+                </a>
                 <div class="explore-container">
                     <div class="explore-container-2">
                         <div class="explore-icon-container">
@@ -140,7 +140,25 @@ if (window.location.pathname === userUrlPath) {
 profileContainer.addEventListener('click', () => {
     window.location.href = userUrlPath;
 });
-{% endif %} 
+
+const homeContainer = document.getElementById('home-container-2');
+const homeImg = document.getElementById('home-img');
+
+const emptyHomeIconSrc = "{% static 'twitter-icons/homepage.png' %}";
+const filledHomeIconSrc = "{% static 'twitter-icons/homepage-filled.png' %}";
+
+const homeUrlPath = "{% url 'tweets:Home' %}";
+if (window.location.pathname === homeUrlPath) {
+    homeImg.src = filledHomeIconSrc;
+} else {
+    homeImg.src = emptyHomeIconSrc;
+}
+
+
+homeContainer.addEventListener('click', () => {
+    window.location.href = homeUrlPath;
+});
+{% endif %}
 
 
 
