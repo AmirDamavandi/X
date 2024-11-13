@@ -62,12 +62,13 @@ def suggest_to_follow(request):
                 get_connection.delete()
             if not check_user in suggest_people:
                 suggest_people.append(check_user)
-    if Relation.objects.filter(from_user=authenticated_user).count() < 3:
+    if Relation.objects.filter(from_user=authenticated_user).count() < 5:
         people = []
         for user in range(3):
             users = User.objects.exclude(username=authenticated_user.username)
             random_people = random.choice(users)
-            if not random_people in people:
+            following_check = Relation.objects.filter(from_user=authenticated_user, to_user__username=random_people)
+            if not random_people in people and not following_check.exists():
                 people.append(random_people)
         context = {'users': people}
         return context

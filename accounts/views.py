@@ -99,7 +99,7 @@ class FollowView(LoginRequiredMixin, View):
         if not query.exists():
             follow = Relation(from_user=self.request.user, to_user=following_user)
             follow.save()
-        return redirect('accounts:ProfileView', username)
+        return redirect(request.get_full_path())
 
 
 class UnfollowView(LoginRequiredMixin, View):

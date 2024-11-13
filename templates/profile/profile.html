@@ -7,13 +7,13 @@
 
 {% block content %}
 
-<div class="content">
+<div class="content-profile-300">
   
 <!-- Navigation   -->
-  <div class="navigation">
+  <div class="navigation-profile-300">
     <a onclick="back()" class="arrow"><img class="arrow-img" src="{% static 'icons/x-icon/arrow.png' %}" alt="back"></a>
-        <div class="header">{{ user.full_name }}</div>
-    <div class="subtext">0 Tweets</div>
+        <div class="header-profile-300">{{ user.full_name }}</div>
+    <div class="subtext-profile-300">0 Tweets</div>
   </div>
 <!--   Cover -->
   <div class="cover">
@@ -131,10 +131,10 @@
         if (history.length > 1) {
             history.back()
         }
-        {#else {#}
-        {#    window.location.href = '{% url 'accounts:Home' %}'#}
-        {#}#}
-    }}
+        else {
+            window.location.href = '{% url 'tweets:Home' %}'
+        }
+    }
 </script>
 
   
