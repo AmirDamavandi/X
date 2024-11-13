@@ -1,6 +1,6 @@
 body{
     overflow-x: hidden;
-    z-index: -1;
+    /*z-index: -1;*/
 
 
 }
@@ -16,7 +16,6 @@ button{
     flex-direction: column;
     width: 642px;
     margin-left: 590px;
-    height: 12150px;
     border: 1px solid rgb(47 51 54);
     z-index: 500;
     margin-top: 0;
@@ -272,9 +271,9 @@ button{
     display: flex;
     padding-top: 12px;
 }
-.content-post3{
+.content-post{
     width: 360px;
-    height: 502px;
+    height: 350px;
     object-fit: cover;
     border-radius: 20px;
     border: 1px solid rgb(113, 118, 123);

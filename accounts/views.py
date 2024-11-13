@@ -81,7 +81,6 @@ class ProfileView(LoginRequiredMixin, View):
     template_name = 'profile/profile.html'
 
     def get(self, request, username):
-        print(suggest_to_follow(request))
         user = get_object_or_404(User, username=username)
         if user.is_authenticated and user.following_check(self.request.user):
             following = True

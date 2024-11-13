@@ -16,7 +16,7 @@
                 </div>
                 <div class="tweet-box">
                     <div class="text-boxx">
-                        <img src="{% static 'twitter-icons/my-profile.jpg' %}" class="my-profile">
+                        <img src="{{ request.user.avatar.url }}" class="my-profile">
                     </div>
                     <div class="text-boxx">
                         <input type="text" placeholder="What's happening?" class="text-box">
@@ -48,6 +48,8 @@
                     </div>
                 </div>
         {% for tweet in tweets %}    
+            {% if tweet.have_tweet_medias %}
+            	
                 <div class="flexbox">
                     <div class="content">
                         <div class="content-title-profile1">
@@ -96,15 +98,21 @@
                                 {{ tweet.tweet }}
                             </div>
                             
-
                             <div class="post-container">
-                            <img src="twitter-posts/tesla-post.jpg" class="content-post">
+                                {% if tweet.tweet_medias.lower|slice:"-3:" == "mp4"%}
+                                    <a href="{{ tweet.tweet_medias }}"><video src="{{ tweet.tweet_medias }}" class="content-post"></video></a>
+                                {% else %}
+                                    <a href="{{ tweet.tweet_medias }}"><img src="{{ tweet.tweet_medias }}" class="content-post" alt=""></a>
+                                {% endif %} 
+                                
                             </div>
+                            
+                            
                             <div class="line-icon-container">
                                 <div class="line-icon-1">
                                     <div class="line-icon1">
                                         <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon"></div>
-                                        <div class="count1">882</div>
+                                        <div class="count1">{{ tweet.comment_count }}</div>
                                     </div>
                                     
                                 </div>
@@ -112,13 +120,13 @@
                                 <div class="line-icon-2">
                                     <div class="line-icon2">
                                         <div class="retweet-icon"><img src="{% static 'twitter-icons/retweet-icon.png' %}" class="line-icons-icon"></div>
-                                        <div class="count2">1,544</div>
+                                        <div class="count2">{{ tweet.retweet_count }}</div>
                                     </div>
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
                                         <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon"></div>
-                                        <div class="count3">16.4K</div>
+                                        <div class="count3">{{ tweet.like_count }}</div>
                                     </div>
                                 </div>
                                 <div class="line-icon-share">
@@ -128,6 +136,8 @@
                         </div>
                     </div>
                 </div>
+                {% endif %} 
+
     {% endfor %}
             </div>
 
