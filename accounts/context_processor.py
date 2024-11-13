@@ -65,7 +65,7 @@ def suggest_to_follow(request):
     if Relation.objects.filter(from_user=authenticated_user).count() < 3:
         people = []
         for user in range(3):
-            users = User.objects.all()
+            users = User.objects.exclude(username=authenticated_user.username)
             random_people = random.choice(users)
             if not random_people in people:
                 people.append(random_people)

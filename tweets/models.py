@@ -1,9 +1,11 @@
+from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
+from django.template.context_processors import media
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import FileExtensionValidator
 # Create your models here.
-
 
 class Tweet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tweets')
@@ -35,29 +37,120 @@ class Tweet(models.Model):
     def clean(self):
         if self.comment and self.quote_tweet:
             raise ValidationError('you cannot comment and quote a tweet at the same time')
-        if Tweet.objects.filter(quote_tweet=self.quote_tweet, user=self.user).exists():
+        if Tweet.objects.filter(quote_tweet__isnull=False, quote_tweet=self.quote_tweet, user=self.user).exists():
             raise ValidationError('you cannot retweet a tweet twice')
 
     def save(self, *args, **kwargs):
         self.clean()
-        super().save(*args, **kwargs)
+        super(Tweet, self).save(*args, **kwargs)
 
     def view_count(self):
-        return View.objects.filter(tweet=self).count()
+        views = View.objects.filter(tweet=self).count()
+        if views > 0:
+            return views
 
     def like_count(self):
-        return Like.objects.filter(tweet=self).count()
+        likes = Like.objects.filter(tweet=self).count()
+        if likes > 0:
+            return likes
+        return ''
 
     def retweet_count(self):
-        return Retweet.objects.filter(tweet=self).count()
+        retweets = Retweet.objects.filter(tweet=self).count()
+        if retweets > 0:
+            return retweets
+        return ''
 
     def bookmark_count(self):
-        return Bookmark.objects.filter(tweet=self).count()
+        bookmarks = Bookmark.objects.filter(tweet=self).count()
+        if bookmarks > 0:
+            return bookmarks
+        return ''
+
+    def comment_count(self):
+        comments = Tweet.objects.filter(comment=self).count()
+        if comments > 0:
+            return comments
+        return ''
+
+    def user_tweeted(self):
+        return self.user
+
+    def published_time(self):
+        created_at = self.created_at
+        created_at = datetime(
+            created_at.year, created_at.month, created_at.day, created_at.hour, created_at.minute, created_at.second
+        )
+        duration = datetime.now() - created_at
+        since_tweeted = created_at.strftime('%b %d, %Y')
+        if duration.days < 1 and duration.seconds < 60:
+            since_tweeted = f'{duration.seconds}s'
+        elif duration.days < 1 and duration.seconds < 3600:
+            minutes = duration.seconds // 60
+            since_tweeted = f'{minutes}m'
+        elif duration.days < 1 and duration.seconds < 86400:
+            hours = duration.seconds // 3600
+            since_tweeted = f'{hours}h'
+        elif duration.days == 1:
+            since_tweeted = f'{duration.days}d'
+        elif duration.days > 1 and created_at.year == datetime.now().year:
+            since_tweeted = f'{created_at.strftime("%b %d").replace('0', '')}'
+        elif duration.days > 1 and created_at.year < datetime.now().year:
+            since_tweeted = f'{created_at.strftime("%b %d, %Y")}'
+        return since_tweeted
+
+    def have_tweet_medias(self):
+        if Media.objects.filter(tweet=self).exists():
+            result = True
+        else:
+            result = False
+        return result
+
+    def tweet_medias(self):
+        medias = Media.objects.filter(tweet=self)
+        for media in medias:
+            media.media.open('r')
+            return media.media.url
 
     class Meta:
         verbose_name = _('Tweet',)
         verbose_name_plural = _('Tweets',)
 
+
+class Hashtag(models.Model):
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='hashtags')
+    hashtag = models.SlugField(max_length=100, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.hashtag
+
+    class Meta:
+        verbose_name = _('Hashtag',)
+        verbose_name_plural = _('Hashtags',)
+
+class Media(models.Model):
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='media')
+    media = models.FileField(
+        upload_to='tweets/', max_length=300,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif', 'jpeg', 'mp4'])]
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.media.name
+
+    def clean(self):
+        if Media.objects.filter(tweet=self.tweet).count() >= 4 and not self.pk:
+            raise ValidationError('tweet can have maximum 4 media')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(Media, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _('Media',)
+        verbose_name_plural = _('Medias',)
 
 
 class View(models.Model):
