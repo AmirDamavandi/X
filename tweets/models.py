@@ -94,9 +94,9 @@ class Tweet(models.Model):
         elif duration.days == 1:
             since_tweeted = f'{duration.days}d'
         elif duration.days > 1 and created_at.year == datetime.now().year:
-            since_tweeted = f'{created_at.strftime("%b %d").replace('0', '')}'
+            since_tweeted = f'{created_at.strftime("%b %#d")}'
         elif duration.days > 1 and created_at.year < datetime.now().year:
-            since_tweeted = f'{created_at.strftime("%b %d, %Y")}'
+            since_tweeted = f'{created_at.strftime("%b %#d, %Y")}'
         return since_tweeted
 
     def have_tweet_medias(self):

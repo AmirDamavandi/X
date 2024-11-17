@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.template.defaulttags import comment
 from django.utils.translation import gettext_lazy as _
 from .manager import MyUserManager
 from django.core.exceptions import ValidationError
@@ -135,6 +134,22 @@ class User(AbstractBaseUser):
     def comment_count(self):
         comments = Tweet.objects.filter(user=self, comment__isnull=False).count()
         return comments
+
+    def user_tweets(self):
+        all_tweets = []
+        tweets = Tweet.objects.filter(user=self)
+        retweets = Retweet.objects.filter(user=self)
+        all_tweets += tweets
+        for tweet in retweets:
+            all_tweets.append(tweet.tweet)
+        all_tweets = sorted(all_tweets, key=lambda x: x.created_at, reverse=True)
+        return all_tweets
+
+    def tweets_count(self):
+        tweets = Tweet.objects.filter(user=self).count()
+        retweets = Tweet.objects.filter(user=self).count()
+        result = tweets + retweets
+        return result
 
 
 class Relation(models.Model):
