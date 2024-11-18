@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
@@ -86,7 +88,8 @@ class ProfileView(LoginRequiredMixin, View):
             following = True
         else:
             following = False
-        context = {'user': user, 'following': following}
+        tweets = user.user_tweets()
+        context = {'user': user, 'following': following, 'tweets': tweets}
         return render(request, self.template_name, context)
 
 
@@ -99,7 +102,7 @@ class FollowView(LoginRequiredMixin, View):
         if not query.exists():
             follow = Relation(from_user=self.request.user, to_user=following_user)
             follow.save()
-        return redirect('accounts:ProfileView', username)
+        return redirect(request.get_full_path())
 
 
 class UnfollowView(LoginRequiredMixin, View):
