@@ -65,13 +65,14 @@ button{
     color: #ffffff;
     border: none;
     padding: 15px 100px 15px 12px;
+    outline: none;
 
 }
 .text-boxx{
     display: inline-block;
     vertical-align: middle;
-    border: none;
 }
+
 .icons{
     display: flex;
     align-items: center;
@@ -80,14 +81,17 @@ button{
     padding-bottom: 8px;
     border-bottom: 1px solid rgb(47 51 54);
     padding-left: 16px;
-
 }
 .media-icon{
     width: 24px;
-
-    padding-left: 65px;
-
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 50%;
 }
+.media-icon:hover {
+    background-color: rgba(15, 20, 25, 0.75);
+}
+
 .gif-icon{
     width: 28px;
     padding-left: 10px;
@@ -112,7 +116,7 @@ button{
     margin-left: 19px;
 }
 .tweet-button-container{
-    margin-left: 210px;
+    margin-left: 500px;
 }
 .tweet-button{
     color: white;
@@ -152,6 +156,9 @@ button{
     text-decoration: none;
 }
 .content:hover{
+    background-color: rgba(111, 118, 123, 0.1);
+}
+.content-without-image:hover {
     background-color: rgba(111, 118, 123, 0.1);
 }
 .post-profile{
@@ -623,7 +630,7 @@ div .icons{
 
 
     }
-    div .content{
+    div .content .content-without-image{
         height: 290px;
     }
     .content-post{
@@ -872,26 +879,7 @@ div .icons{
         overflow-x: hidden;
         border: none;
     }
-    .content,
-.content2,
-.content3,
-.content4,
-.content5,
-.content6,
-.content7,
-.content8,
-.content9,
-.content10,
-.content11,
-.content12,
-.content13,
-.content14,
-.content15,
-.content16,
-.content17,
-.content18,
-.content19,
-.content20{
+    .content, .content-without-image{
 border: none;
 border-bottom: 1px solid rgb(47 51 54);
 

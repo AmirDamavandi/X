@@ -1,8 +1,7 @@
 from datetime import datetime
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import models
 from django.conf import settings
-from django.template.context_processors import media
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import FileExtensionValidator
 # Create your models here.
@@ -37,8 +36,12 @@ class Tweet(models.Model):
     def clean(self):
         if self.comment and self.quote_tweet:
             raise ValidationError('you cannot comment and quote a tweet at the same time')
-        if Tweet.objects.filter(quote_tweet__isnull=False, quote_tweet=self.quote_tweet, user=self.user).exists():
-            raise ValidationError('you cannot retweet a tweet twice')
+        try:
+            if Tweet.objects.filter(quote_tweet__isnull=False, quote_tweet=self.quote_tweet, user=self.user).exists():
+                raise ValidationError('you cannot retweet a tweet twice')
+        except ObjectDoesNotExist:
+            pass
+
 
     def save(self, *args, **kwargs):
         self.clean()
@@ -128,12 +131,22 @@ class Hashtag(models.Model):
     class Meta:
         verbose_name = _('Hashtag',)
         verbose_name_plural = _('Hashtags',)
-
+def file_size(value):
+    limit = 2 * 1024 * 1024
+    if value.size > limit:
+        return ValidationError('file size too large')
 class Media(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='media')
     media = models.FileField(
         upload_to='tweets/', max_length=300,
-        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif', 'jpeg', 'mp4'])]
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    'png', 'gif', 'jpg', 'mp4', 'webm', 'ogg'
+
+                ],
+            )
+        ]
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -141,8 +154,11 @@ class Media(models.Model):
         return self.media.name
 
     def clean(self):
-        if Media.objects.filter(tweet=self.tweet).count() >= 4 and not self.pk:
-            raise ValidationError('tweet can have maximum 4 media')
+        try:
+            if Media.objects.filter(tweet=self.tweet).count() >= 4 and not self.pk:
+                raise ValidationError('tweet can have maximum 4 media')
+        except ObjectDoesNotExist:
+            pass
 
     def save(self, *args, **kwargs):
         self.clean()

@@ -3,7 +3,7 @@
 
 
 {% block title %}
-	X / Home
+	Home / X
 {% endblock %}
 
 {% block content %}
@@ -11,12 +11,12 @@
                 <div class="home-title">
                     Home
                     <div class="top-tweet-container">
-                        <img src="{% static 'twitter-icons/top-tweet_prev_ui.png' %}" class="top-tweet">
+                        <img src="{% static 'twitter-icons/top-tweet_prev_ui.png' %}" class="top-tweet" alt="">
                     </div>
                 </div>
                 <div class="tweet-box">
                     <div class="text-boxx">
-                        {% if request.user.avatar.url %}
+                        {% if request.user.avatar %}
                         	<img src="{{ request.user.avatar.url }}" class="my-profile" alt="avatar">
                         {% else %}
                             <img src="{% static 'icons/x-icon/default_profile_400x400.png' %}" class="my-profile" alt="avatar">
@@ -24,36 +24,39 @@
 
                     </div>
                     <div class="text-boxx">
-                        <label>
-                            <input type="text" placeholder="What's happening?" class="text-box">
-                        </label>
+                        <form method="post" action="{% url 'tweets:Home' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ tweet_form.tweet }}
+                            <button style="border: none; cursor: pointer" class="tweet-button" type="submit">
+                                Post
+                            </button>
+                            {{ media_form }}
+                        </form>
                     </div>
-                </div>
                 <div class="icons">
-                    <div>
-                        <img class="media-icon" src="{% static 'twitter-icons/media-icon.png' %}">  
+                    <div class="img-ic">
+                        <label for="id_media-0-media">
+                                <img class="media-icon" src="{% static 'twitter-icons/media-icon.png' %}" alt="">
+                            </label>
                     </div>
-                    <div>
-                        <img class="gif-icon" src="{% static 'twitter-icons/gif-icon.png' %}">
-                    </div>
-                    <div>
-                        <img class="poll-icon" src="{% static 'twitter-icons/poll-icon.png' %}">
-                    </div>
-                    <div>
-                        <img class="emoji-icon" src="{% static 'twitter-icons/emoji-icon.png' %}">
-                    </div>
-                    <div>
-                        <img class="schedule-icon" src="{% static 'twitter-icons/schedule-icon.png' %}">
-                    </div>
-                    <div>
-                        <img class="location-icon" src="{% static 'twitter-icons/location-icon.png' %}">
-                    </div>
-                    <div class="tweet-button-container">
-                        <button class="tweet-button">
-                            Tweet
-                        </button>
-                    </div>
+                        <div>
+                            <img class="gif-icon" src="{% static 'twitter-icons/gif-icon.png' %}" alt="">
+                        </div>
+                        <div>
+                            <img class="poll-icon" src="{% static 'twitter-icons/poll-icon.png' %}" alt="">
+                        </div>
+                        <div>
+                            <img class="emoji-icon" src="{% static 'twitter-icons/emoji-icon.png' %}" alt="">
+                        </div>
+                        <div>
+                            <img class="schedule-icon" src="{% static 'twitter-icons/schedule-icon.png' %}" alt="">
+                        </div>
+                        <div>
+                            <img class="location-icon" src="{% static 'twitter-icons/location-icon.png' %}" alt="">
+                        </div>
+                        </div>
                 </div>
+                
         {% for tweet in tweets %}
             {% if tweet.have_tweet_medias %}
             	
@@ -129,7 +132,7 @@
                             <div class="line-icon-container">
                                 <div class="line-icon-1">
                                     <div class="line-icon1">
-                                        <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon" alt=""></div>
                                         <div class="count1">{{ tweet.comment_count }}</div>
                                     </div>
                                     
@@ -137,13 +140,13 @@
                                 
                                 <div class="line-icon-2">
                                     <div class="line-icon2">
-                                        <div class="retweet-icon"><img src="{% static 'twitter-icons/retweet-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="retweet-icon"><img src="{% static 'twitter-icons/retweet-icon.png' %}" class="line-icons-icon" alt=""></div>
                                         <div class="count2">{{ tweet.retweet_count }}</div>
                                     </div>
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
-                                        <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon" alt=""></div>
                                         <div class="count3">{{ tweet.like_count }}</div>
                                     </div>
                                 </div>
@@ -227,7 +230,7 @@
                             <div class="line-icon-container">
                                 <div class="line-icon-1">
                                     <div class="line-icon1">
-                                        <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon" alt=""></div>
                                         <div class="count1">{{ tweet.comment_count }}</div>
                                     </div>
 
@@ -235,18 +238,18 @@
 
                                 <div class="line-icon-2">
                                     <div class="line-icon2">
-                                        <div class="retweet-icon"><img src="{% static 'twitter-icons/retweet-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="retweet-icon"><img src="{% static 'twitter-icons/retweet-icon.png' %}" class="line-icons-icon" alt=""></div>
                                         <div class="count2">{{ tweet.retweet_count }}</div>
                                     </div>
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
-                                        <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon"></div>
+                                        <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon" alt=""></div>
                                         <div class="count3">{{ tweet.like_count }}</div>
                                     </div>
                                 </div>
                                 <div class="line-icon-share">
-                                    <div class="share-icon"><img src="{% static 'twitter-icons/share-icon.png' %}" class="line-icons-share"></div>
+                                    <div class="share-icon"><img src="{% static 'twitter-icons/share-icon.png' %}" class="line-icons-share" alt=""></div>
                                 </div>
                             </div>
                         </div>
