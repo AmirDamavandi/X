@@ -119,6 +119,10 @@ class Tweet(models.Model):
         user_liked = Like.objects.filter(user=user, tweet=self).exists()
         return user_liked
 
+    def user_retweet(self, user):
+        user_retweeted = Retweet.objects.filter(user=user, tweet=self).exists()
+        return user_retweeted
+
     class Meta:
         verbose_name = _('Tweet',)
         verbose_name_plural = _('Tweets',)

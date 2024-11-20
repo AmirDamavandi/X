@@ -51,3 +51,26 @@ class UnLikeTweetView(View):
             dislike.delete()
         next_path = request.POST.get('next', '/')
         return redirect(next_path)
+
+
+class RetweetView(View):
+    def post(self, request, tweet_id):
+        user = request.user
+        tweet = Tweet.objects.get(pk=tweet_id)
+        retweeted_before = Retweet.objects.filter(user=user, tweet=tweet).exists()
+        if not retweeted_before:
+            new_retweet = Retweet(user=user, tweet=tweet)
+            new_retweet.save()
+        next_path = request.POST.get('next', '/')
+        return redirect(next_path)
+
+class UndoRetweetView(View):
+    def post(self, request, tweet_id):
+        user = request.user
+        tweet = Tweet.objects.get(pk=tweet_id)
+        retweeted_before = Retweet.objects.filter(user=user, tweet=tweet).exists()
+        if retweeted_before:
+            retweet = Retweet.objects.get(user=user, tweet_id=tweet_id)
+            retweet.delete()
+        next_path = request.POST.get('next', '/')
+        return redirect(next_path)

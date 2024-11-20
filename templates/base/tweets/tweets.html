@@ -1,0 +1,262 @@
+{% load static %}
+{% load user_like_tag %}
+{% load user_retweet_tag %}
+        {% for tweet in tweets %}
+            {% if tweet.have_tweet_medias %}
+            	
+                <div class="flexbox">
+                    <div class="content">
+                        <div class="content-title-profile1">
+                            <div class="content-title-profile-1">
+                                {% if tweet.user_tweeted.avatar_image %}
+                                    <img src="{{ tweet.user_tweeted.avatar_image }}" class="my-profile" alt="avatar">
+                                {% else %}
+                                    <img src="{% static 'icons/x-icon/default_profile_400x400.png' %}" class="my-profile" alt="avatar">
+                                {% endif %}
+                                <div class="content-tooltip1">
+                                    <div class="content-tooltip-1">
+                                        {% if tweet.user_tweeted.avatar_image %}
+                                            <img src="{{ tweet.user_tweeted.avatar_image }}" class="my-profile" alt="avatar">
+                                        {% else %}
+                                            <img src="{% static 'icons/x-icon/default_profile_400x400.png' %}" class="my-profile" alt="avatar">
+                                        {% endif %}
+                                        <button class="content-follow-button-tooltip-1">Follow</button>
+                                    </div>   
+                                    
+                                    <div>
+                                        <div>
+                                        <span class="follow-name-tooltip">{{ tweet.user_tweeted.full_name }}</span>
+                                            {% if tweet.user_tweeted.is_verified %}
+                                                <img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon" alt="verified">
+                                            {% endif %} 
+                                            <span class="follow-username-tooltip">@{{ tweet.user_tweeted }}</span>
+                                        </div>
+                                        <div class="follow-tooltip-content-1">
+                                            {{ tweet.user_tweeted.bio }}
+                                        </div>
+                                        <div class="followers-following">
+                                            <b>{{ tweet.user_tweeted.following_count }}</b> <span class="followers-count-tooltip">Following</span>
+                                            <b>{{ tweet.user_tweeted.follower_count }}</b> <span class="followers-count-tooltip">Followers</span>
+                                        </div>
+                                    
+                                    </div>
+    
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <div class="content-title">
+                            <div class="title-container">
+                                <span class="post-title">{{ tweet.user_tweeted.full_name }}</span>
+                                {% if tweet.tweet_user.is_verified %}
+                                	<img src="{% static 'twitter-icons/verified.png' %}" class="verified" alt="verified">
+                                {% endif %}
+                                <span class="title-date">@{{ tweet.user_tweeted }} <b>&#183;</b> {{ tweet.published_time }} </span>
+                                <span class="dot">...</span>
+                            </div>
+                                    
+
+                            <div class="content--title">
+                                {{ tweet.tweet }}
+                            </div>
+
+                            <div class="post-container">
+                                {% if tweet.tweet_medias.lower|slice:"-3:" == "mp4"%}
+                                    <a href="{{ tweet.tweet_medias }}"><video src="{{ tweet.tweet_medias }}" class="content-post"></video></a>
+                                {% else %}
+                                    <a href="{{ tweet.tweet_medias }}"><img src="{{ tweet.tweet_medias }}" class="content-post" alt=""></a>
+                                {% endif %} 
+                                
+                            </div>
+
+                            
+                            <div class="line-icon-container">
+                                <div class="line-icon-1">
+                                    <div class="line-icon1">
+                                        <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon" alt=""></div>
+                                        <div class="count1">{{ tweet.comment_count }}</div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="line-icon-2">
+                                    <div class="line-icon2">
+                                        {% user_retweet tweet user as retweeted %}
+                                        {% if not retweeted %}
+                                        <form method="post" action="{% url 'tweets:RetweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                        	<input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit" class="retweet-icon"><img src="{% static 'twitter-icons/repeat.png' %}" class="line-icons-icon" alt=""></button>
+                                        </form>
+                                            <div class="count2">{{ tweet.retweet_count }}</div>
+                                        {% else %}
+                                        <form method="post" action="{% url 'tweets:UndoRetweetView' tweet.id %}">
+                                        {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit" class="retweet-icon"><img src="{% static 'twitter-icons/repeated.png' %}" class="line-icons-icon" alt=""></button>
+                                        </form>
+                                            <div style="color: #00ba7c" class="count2">{{ tweet.retweet_count }}</div>
+                                        {% endif %} 
+                                        
+                                    </div>
+                                </div>
+                                <div class="line-icon-3">
+                                    <div class="line-icon3">
+                                        {% user_like tweet user as liked  %}
+                                        {% if not liked %}
+                                        	<form method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                            <div class="count3">{{ tweet.like_count }}</div>
+                                        {% else %}
+                                            <form method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                            <div style="color: #f91881" class="count3">{{ tweet.like_count }}</div>
+                                        {% endif %}
+                                        
+                                    
+                                    </div>
+                                </div>
+                                <div class="line-icon-share">
+                                    <div class="share-icon"><img src="{% static 'twitter-icons/share-icon.png' %}" class="line-icons-share" alt="share-icon"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="flexbox">
+                    <div class="content-without-image">
+                        <div class="content-title-profile1">
+                            <div class="content-title-profile-1">
+                                {% if tweet.user_tweeted.avatar_image %}
+                                    <img src="{{ tweet.user_tweeted.avatar_image }}" class="my-profile" alt="avatar">
+                                {% else %}
+                                    <img src="{% static 'icons/x-icon/default_profile_400x400.png' %}" class="my-profile" alt="avatar">
+                                {% endif %}
+                                <div class="content-tooltip1">
+                                    <div class="content-tooltip-1">
+                                        {% if tweet.user_tweeted.avatar_image %}
+                                            <img src="{{ tweet.user_tweeted.avatar_image }}" class="my-profile" alt="avatar">
+                                        {% else %}
+                                            <img src="{% static 'icons/x-icon/default_profile_400x400.png' %}" class="my-profile" alt="avatar">
+                                        {% endif %}
+                                        <button class="content-follow-button-tooltip-1">Follow</button>
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                        <span class="follow-name-tooltip">{{ tweet.user_tweeted.full_name }}</span>
+                                            {% if tweet.user_tweeted.is_verified %}
+                                                    <img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon" alt="verified">
+                                            {% endif %}
+                                            <span class="follow-username-tooltip">@{{ tweet.user_tweeted }}</span>
+                                        </div>
+                                        <div class="follow-tooltip-content-1">
+                                            {{ tweet.user_tweeted.bio }}
+                                        </div>
+                                        <div class="followers-following">
+                                            <b>{{ tweet.user_tweeted.following_count }}</b> <span class="followers-count-tooltip">Following</span>
+                                            <b>{{ tweet.user_tweeted.follower_count }}</b> <span class="followers-count-tooltip">Followers</span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="content-title">
+
+                            <div class="title-container">
+                                <span class="post-title">{{ tweet.user_tweeted.full_name }} {{ '  ' }} </span>
+                                {% if tweet.user_tweeted.is_verified %}
+                                    <img src="{% static 'twitter-icons/verified.png' %}" class="verified" alt="verified">
+                                {% endif %}
+                                <span class="title-date">@{{ tweet.user_tweeted }} <b>&#183;</b> {{ tweet.published_time }} </span>
+                                <span class="dot">...</span>
+                            </div>
+
+
+                            <div class="content--title">
+                                {{ tweet.tweet }}
+                            </div>
+
+{#                            <div class="post-container">#}
+{#                                {% if tweet.tweet_medias.lower|slice:"-3:" == "mp4"%}#}
+{#                                    <a href="{{ tweet.tweet_medias }}"><video src="{{ tweet.tweet_medias }}" class="content-post"></video></a>#}
+{#                                {% else %}#}
+{#                                    <a href="{{ tweet.tweet_medias }}"><img src="{{ tweet.tweet_medias }}" class="content-post" alt=""></a>#}
+{#                                {% endif %} #}
+{#                                #}
+{#                            </div>#}
+
+
+                            <div class="line-icon-container">
+                                <div class="line-icon-1">
+                                    <div class="line-icon1">
+                                        <div class="reply-icon"><img src="{% static 'twitter-icons/reply-icon.png' %}" class="line-icons-icon" alt=""></div>
+                                        <div class="count1">{{ tweet.comment_count }}</div>
+                                    </div>
+
+                                </div>
+
+                                <div class="line-icon-2">
+                                    <div class="line-icon2">
+                                    {% user_retweet tweet user as retweeted %}
+                                        {% if not retweeted %}
+                                        <form method="post" action="{% url 'tweets:RetweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                        	<input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit" class="retweet-icon"><img src="{% static 'twitter-icons/repeat.png' %}" class="line-icons-icon" alt=""></button>
+                                        </form>
+                                            <div class="count2">{{ tweet.retweet_count }}</div>
+                                        {% else %}
+                                        <form method="post" action="{% url 'tweets:UndoRetweetView' tweet.id %}">
+                                        {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit" class="retweet-icon"><img src="{% static 'twitter-icons/repeated.png' %}" class="line-icons-icon" alt=""></button>
+                                        </form>
+                                            <div style="color: #00ba7c" class="count2">{{ tweet.retweet_count }}</div>
+                                        {% endif %} 
+                                    </div>
+                                </div>
+                                <div class="line-icon-3">
+                                    <div class="line-icon3">
+                                        {% user_like tweet user as liked  %}
+                                        {% if not liked %}
+                                            <form method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                        {% else %}
+                                            <form method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                        {% endif %}
+                                        <div style="color: #f91881" class="count3">{{ tweet.like_count }}</div>
+                                    </div>
+                                </div>
+                                <div class="line-icon-share">
+                                    <div class="share-icon"><img src="{% static 'twitter-icons/share-icon.png' %}" class="line-icons-share" alt=""></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+    {% endfor %}
+            </div>

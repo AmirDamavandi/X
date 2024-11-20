@@ -311,6 +311,8 @@ button{
 .retweet-icon{
     padding-top: 10px;
     padding-right: 7px;
+    background: none;
+    cursor: pointer;
 }
 .like-icon{
     padding-top: 6px;
