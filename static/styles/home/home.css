@@ -315,6 +315,11 @@ button{
 .like-icon{
     padding-top: 6px;
     padding-right: 4px;
+    background: none;
+    cursor: pointer;
+}
+.line-icons-icon {
+    background: none;
 }
 .share-icon{
     margin-top: 7px;

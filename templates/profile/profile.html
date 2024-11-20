@@ -1,5 +1,6 @@
 {% extends 'base/base/base.html' %}
 {% load static %}
+{% load user_like_tag %}
 
 {% block title %}
 	{{ user.first_name }} (@{{ user.username }}) / X
@@ -214,7 +215,20 @@
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
-                                        <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon"></div>
+                                        {% user_like tweet user as liked  %}
+                                        {% if not liked %}
+                                        	<form method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                        {% else %}
+                                            <form method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                        {% endif %}
                                         <div class="count3">{{ tweet.like_count }}</div>
                                     </div>
                                 </div>
@@ -312,7 +326,20 @@
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
-                                        <div class="like-icon"><img src="{% static 'twitter-icons/likes-icon.png' %}" class="line-icons-icon"></div>
+                                        {% user_like tweet user as liked  %}
+                                        {% if not liked %}
+                                        	<form method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                        {% else %}
+                                            <form method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
+                                            {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            </form>
+                                        {% endif %}
                                         <div class="count3">{{ tweet.like_count }}</div>
                                     </div>
                                 </div>

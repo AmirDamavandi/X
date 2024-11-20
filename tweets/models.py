@@ -115,6 +115,10 @@ class Tweet(models.Model):
             media.media.open('r')
             return media.media.url
 
+    def user_like(self, user):
+        user_liked = Like.objects.filter(user=user, tweet=self).exists()
+        return user_liked
+
     class Meta:
         verbose_name = _('Tweet',)
         verbose_name_plural = _('Tweets',)
@@ -131,10 +135,8 @@ class Hashtag(models.Model):
     class Meta:
         verbose_name = _('Hashtag',)
         verbose_name_plural = _('Hashtags',)
-def file_size(value):
-    limit = 2 * 1024 * 1024
-    if value.size > limit:
-        return ValidationError('file size too large')
+
+
 class Media(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name='media')
     media = models.FileField(
@@ -143,7 +145,6 @@ class Media(models.Model):
             FileExtensionValidator(
                 allowed_extensions=[
                     'png', 'gif', 'jpg', 'mp4', 'webm', 'ogg'
-
                 ],
             )
         ]
