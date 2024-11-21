@@ -1,8 +1,5 @@
 from django import forms
-import re as regex
-
-from django.http import request
-
+import re
 from .models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
@@ -20,29 +17,24 @@ class SignUpForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        password1 = cleaned_data.get('password1')
-        password2 = cleaned_data.get('password2')
-        email = cleaned_data.get('email')
-        phone_number = cleaned_data.get('phone_number')
-        if password1 and password2 and password1 != password2:
-            self.add_error('password2', 'Passwords do not match')
-        if email is None and phone_number is None:
-            self.add_error('email', 'Either email or phone number must be provided.')
-        return cleaned_data
-
-    def clean_username(self):
-        username = self.cleaned_data['username']
         username_pattern = r'^[a-zA-Z0-9._]{3,30}$'
-        if not regex.match(username_pattern, username):
-            return self.add_error('username', 'Incorrect username.')
-        return username
+        if not re.match(username_pattern, cleaned_data['username']):
+            self.add_error('username', ValidationError('Username must contain only letters, numbers underscore and dot'))
+        elif re.match(username_pattern, cleaned_data['username']):
+            cleaned_data['username'] = cleaned_data['username'].lower()
 
-    def clean_password1(self):
-        password1 = self.cleaned_data['password1']
-        password_pattern = r'^[a-zA-Z0-9@$%&*_=+\']{6,128}$'
-        if not regex.match(password_pattern, str(password1)):
-            return self.add_error('password1', ValidationError('Incorrect password'))
-        return password1
+        if cleaned_data['password1'] != cleaned_data['password2']:
+            self.add_error('password2', ValidationError('Passwords must match'))
+
+        password_pattern = r'[a-zA-Z0-9@$%&*_=+\']{6,128}'
+        if not re.match(password_pattern, cleaned_data['password1']):
+            self.add_error('password1', ValidationError(
+                'Password must contain only letters(a-z, A-Z), numbers and some special characters, yours is invalid'
+            ))
+        elif re.match(password_pattern, cleaned_data['password1']):
+            cleaned_data['password1'] = cleaned_data['password1']
+
+        return cleaned_data
 
 
 class LoginForm(forms.Form):

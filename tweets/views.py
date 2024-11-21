@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 
 from .models import *
@@ -5,7 +6,7 @@ from django.views.generic import View
 from .forms import *
 # Create your views here.
 
-class Home(View):
+class Home(LoginRequiredMixin, View):
     def get(self, request):
         tweet_form = TweetModelForm()
         media_form = MediaFormSet()
