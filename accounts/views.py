@@ -116,3 +116,10 @@ class UnfollowView(LoginRequiredMixin, View):
         next_url = request.POST.get('next', '/')
         print(next_url)
         return redirect(next_url)
+
+
+
+class EditProfileView(View):
+    def get(self, request):
+        user = request.user
+        return render(request, 'profile/edit_profile.html', {'user': user})

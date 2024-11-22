@@ -10,4 +10,6 @@ urlpatterns = [
     path('<str:username>/', ProfileView.as_view(), name='ProfileView'),
     path('follow/<str:username>/', FollowView.as_view(), name='FollowView'),
     path('unfollow/<str:username>/', UnfollowView.as_view(), name='UnFollowView'),
+    path('edit/profile/', EditProfileView.as_view(), name='EditProfileView'),
+
 ]

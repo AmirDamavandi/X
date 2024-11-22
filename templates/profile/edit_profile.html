@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{% static 'styles/profile/edit_profile.css' %}">
+</head>
+<body>
+    <div class="edit-profile">
+        <div class="header">
+            <button class="close-btn">✖</button>
+            <h2>Edit Profile</h2>
+            <button class="save-btn">Save</button>
+        </div>
+
+        <div class="header-image">
+            <img style="width: 100%; height: 100%" src="" alt="">
+        </div>
+
+        <!-- Profile Photo -->
+        <div class="profile-photo-container">
+            <div class="profile-photo">
+                <img src="https://via.placeholder.com/80" alt="Profile">
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form class="form">
+            <!-- First Name -->
+            <div class="form-group">
+                <input type="text" id="first-name" placeholder=" " />
+                <label class="floating-label" for="first-name">First Name</label>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+                <input type="text" id="last-name" placeholder=" " />
+                <label class="floating-label" for="last-name">Last Name</label>
+            </div>
+
+            <!-- Username -->
+            <div class="form-group">
+                <input type="text" id="username" placeholder=" " />
+                <label class="floating-label" for="username">Username</label>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <input type="email" id="email" placeholder=" " />
+                <label class="floating-label" for="email">Email</label>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+                <input type="tel" id="phone" placeholder=" " />
+                <label class="floating-label" for="phone">Phone Number</label>
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group">
+                <textarea id="bio" rows="2" placeholder=" "></textarea>
+                <label class="floating-label" for="bio">Bio</label>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+                <select id="gender">
+                    <option value="" disabled selected hidden></option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+                <label class="floating-label" for="gender">Gender</label>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+                <input type="date" id="dob" placeholder=" " />
+                <label class="floating-label" for="dob">Date of Birth</label>
+            </div>
+
+            <!-- Account Type -->
+            <div class="form-group">
+                <input type="text" id="account-type" placeholder=" " />
+                <label class="floating-label" for="account-type">Account Type</label>
+            </div>
+
+            <!-- Location -->
+            <div class="form-group">
+                <input type="text" id="location" placeholder=" " />
+                <label class="floating-label" for="location">Location</label>
+            </div>
+
+            <!-- Website -->
+            <div class="form-group">
+                <input type="url" id="website" placeholder=" " />
+                <label class="floating-label" for="website">Website</label>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
