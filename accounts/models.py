@@ -3,9 +3,10 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from .manager import MyUserManager
 from django.core.exceptions import ValidationError
-import re
 from urllib.parse import urlparse
 from tweets.models import View as PostView, Tweet, Like, Retweet, Bookmark
+from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.validators import *
 # Create your models here.
 
 
@@ -14,14 +15,29 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30, help_text='enter your last name', blank=True, null=True)
     header = models.ImageField(upload_to='users_header/', null=True, blank=True)
     avatar = models.ImageField(upload_to='users_avatar/', null=True, blank=True)
-    username = models.CharField(max_length=30, unique=True, help_text='enter your username')
+    username = models.CharField(
+        max_length=30, unique=True, help_text='enter your username',
+        validators=[
+            UnicodeUsernameValidator(
+                regex=r"^[\w]+\Z",
+                message="Enter a valid username. contain only letters, numbers, and _"),
+        ],
+    )
     email = models.EmailField(unique=True, help_text='enter your email address')
     phone_number = models.CharField(
-        max_length=11, unique=True, help_text='enter your phone number', blank=True, null=True
+        max_length=15, unique=True, help_text='enter your phone number', blank=True, null=True
     )
     is_verified = models.BooleanField(default=False)
     account_types = (('public', 'Public'), ('private', 'Private'))
-    account_type = models.CharField(max_length=8, choices=account_types, default='public')
+    account_type = models.CharField(
+        max_length=8, choices=account_types, default='public',
+        validators=[
+            RegexValidator(
+                regex=r'^(private|public)$',
+                message='account type must be public or private only'
+            )
+        ],
+    )
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField(max_length=300, null=True, blank=True)
     location = models.CharField(max_length=50, null=True, blank=True)

@@ -3,8 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
 from django.views.generic import View
 from django.http import HttpResponse
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate
 from .models import *
+from django.core import validators
 # Create your views here.
 
 
@@ -37,7 +38,6 @@ class SignUpView(View):
     def post(self, request):
         signup_form = self.form(request.POST)
         if signup_form.is_valid():
-            print(signup_form.cleaned_data)
             cd = signup_form.cleaned_data
             user = User.objects.create_user(
                 first_name=cd['first_name'],
@@ -48,8 +48,7 @@ class SignUpView(View):
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('tweets:Home')
         else:
-            print(signup_form.errors)
-        return render(request, self.template_name, {'form': signup_form})
+            return render(request, self.template_name, {'form': signup_form})
 
 
 class LoginView(View):
@@ -101,7 +100,6 @@ class FollowView(LoginRequiredMixin, View):
             follow = Relation(from_user=self.request.user, to_user=following_user)
             follow.save()
         next_url = request.POST.get('next', '/')
-        print(next_url)
         return redirect(next_url)
 
 
@@ -114,12 +112,24 @@ class UnfollowView(LoginRequiredMixin, View):
             unfollow = Relation.objects.get(from_user=self.request.user, to_user=unfollowing_user)
             unfollow.delete()
         next_url = request.POST.get('next', '/')
-        print(next_url)
         return redirect(next_url)
 
 
 
 class EditProfileView(View):
+    form = UserEditModelForm
     def get(self, request):
         user = request.user
-        return render(request, 'profile/edit_profile.html', {'user': user})
+        form = self.form(instance=user)
+        context = {'user': user, 'form': form}
+        return render(request, 'profile/edit_profile.html', context)
+
+    def post(self, request):
+        user = request.user
+        form = self.form(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:ProfileView', username=user.username)
+        else:
+            context = {'form': self.form(request.POST, request.FILES, instance=user)}
+            return render(request, 'profile/edit_profile.html', context)
