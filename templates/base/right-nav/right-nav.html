@@ -124,7 +124,8 @@
                                                     {% endif %} 
                                                     <form action="{% url 'accounts:FollowView' user.username %}">
                                                         {% csrf_token %}
-                                                        <button type="submit" class="follow-button-tooltip">Follow</button>
+                                                        <input type="hidden" name="next" value="{{ request.path }}">
+                                                        <button style="cursor: pointer" type="submit" class="follow-button-tooltip">Follow</button>
                                                     </form>
                                                 </div>   
                                                 
@@ -164,7 +165,8 @@
                                         <div>
                                             <form action="{% url 'accounts:FollowView' user.username %}" method="post">
                                                 {% csrf_token %}
-                                                <input type="submit" class="follow-button" value="Follow">
+                                                <input type="hidden" name="next" value="{{ request.path }}">
+                                                <input style="cursor: pointer" type="submit" class="follow-button" value="Follow">
                                             </form>
                                         </div>
                                     </div>

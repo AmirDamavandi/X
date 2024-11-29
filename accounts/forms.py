@@ -1,11 +1,12 @@
 from django import forms
-import re as regex
+import re
 
-from django.http import request
+from sqlparse import parse
 
 from .models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+import phonenumbers
 
 
 class SignUpForm(forms.ModelForm):
@@ -20,29 +21,24 @@ class SignUpForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        password1 = cleaned_data.get('password1')
-        password2 = cleaned_data.get('password2')
-        email = cleaned_data.get('email')
-        phone_number = cleaned_data.get('phone_number')
-        if password1 and password2 and password1 != password2:
-            self.add_error('password2', 'Passwords do not match')
-        if email is None and phone_number is None:
-            self.add_error('email', 'Either email or phone number must be provided.')
-        return cleaned_data
-
-    def clean_username(self):
-        username = self.cleaned_data['username']
         username_pattern = r'^[a-zA-Z0-9._]{3,30}$'
-        if not regex.match(username_pattern, username):
-            return self.add_error('username', 'Incorrect username.')
-        return username
+        if not re.match(username_pattern, cleaned_data['username']):
+            self.add_error('username', ValidationError('Username must contain only letters, numbers underscore and dot'))
+        elif re.match(username_pattern, cleaned_data['username']):
+            cleaned_data['username'] = cleaned_data['username'].lower()
 
-    def clean_password1(self):
-        password1 = self.cleaned_data['password1']
-        password_pattern = r'^[a-zA-Z0-9@$%&*_=+\']{6,128}$'
-        if not regex.match(password_pattern, str(password1)):
-            return self.add_error('password1', ValidationError('Incorrect password'))
-        return password1
+        if cleaned_data['password1'] != cleaned_data['password2']:
+            self.add_error('password2', ValidationError('Passwords must match'))
+
+        password_pattern = r'[a-zA-Z0-9@$%&*_=+\']{6,128}'
+        if not re.match(password_pattern, cleaned_data['password1']):
+            self.add_error('password1', ValidationError(
+                'Password must contain only letters(a-z, A-Z), numbers and some special characters, yours is invalid'
+            ))
+        elif re.match(password_pattern, cleaned_data['password1']):
+            cleaned_data['password1'] = cleaned_data['password1']
+
+        return cleaned_data
 
 
 class LoginForm(forms.Form):
@@ -65,3 +61,44 @@ class LoginForm(forms.Form):
             else:
                 self.add_error('password', 'Incorrect password.')
         return self.cleaned_data
+
+
+class UserEditModelForm(forms.ModelForm):
+    class Meta:
+        model = User
+        exclude = (
+            'is_verified', 'date_joined', 'relation', 'is_admin',
+            'is_active', 'is_suspended', 'is_verified', 'password', 'last_login'
+        )
+        widgets = {
+            'first_name': forms.TextInput(attrs={'id': 'first-name', 'placeholder': ' '}),
+            'last_name': forms.TextInput(attrs={'id': 'last-name', 'placeholder': ' '}),
+            'username': forms.TextInput(attrs={'id': 'email', 'placeholder': ' '}),
+            'email': forms.EmailInput(attrs={'id': 'email', 'placeholder': ' '}),
+            'phone_number': forms.TextInput(attrs={'id': 'phone', 'placeholder': ' '}),
+            'bio': forms.Textarea(attrs={'id': 'bio', 'placeholder': ' ', 'rows': 2}),
+            'gender': forms.Select(attrs={'id': 'gender', 'placeholder': ' '}),
+            'date_of_birth': forms.DateInput(attrs={'id': 'dob', 'placeholder': ' '}),
+            'account_type': forms.Select(attrs={'id': 'account_type', 'placeholder': ' '}),
+            'location': forms.TextInput(attrs={'id': 'location', 'placeholder': ' '}),
+            'website': forms.TextInput(attrs={'id': 'website', 'placeholder': ' '}),
+            'header': forms.ClearableFileInput(attrs={'id': 'header-input', 'hidden': 'hidden'}),
+            'avatar': forms.ClearableFileInput(attrs={'id': 'avatar-input', 'hidden': 'hidden'}),
+
+        }
+
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        if not phone_number is None:
+            try:
+                parsed_phone_number = phonenumbers.parse(phone_number)
+                is_a_valid_phone_number = phonenumbers.is_valid_number(parsed_phone_number)
+                if is_a_valid_phone_number:
+                    self.cleaned_data['phone_number'] = parsed_phone_number
+                else:
+                    raise ValidationError('Enter a valid phone number')
+            except phonenumbers.NumberParseException:
+                raise ValidationError('Enter phone number with country code, like "+code" ')
+
+        return phone_number

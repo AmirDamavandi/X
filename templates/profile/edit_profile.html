@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.first_name }} (@{{ user.username }}) / X</title>
+    <link rel="stylesheet" href="{% static 'styles/profile/edit_profile.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+        rel="shortcut icon"
+        href="https://github.com/Danger-XD/X-TwitterClone/blob/main/images/icons8-twitterx-192.png?raw=true"
+        type="image/x-icon"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+</head>
+<body class="p-3 mb-2 bg-dark text-white">
+    <div class="edit-profile">
+        <div class="header">
+            <button style="outline: none" onclick="back()" id="back-btn" class="close-btn">✖</button>
+            <h2>Edit Profile</h2>
+        </div>
+        <form action="{% url 'accounts:EditProfileView' %}" method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        <div class="header-image">
+            <label for="header-input">
+                <img style="height: 240px; width: 470px; cursor: pointer" class="header_image" src="{{ user.header_image }}" alt="header">
+            </label>
+            {{ form.header }}
+        </div>
+
+        <div class="profile-photo-container">
+            <div class="profile-photo">
+                <label for="avatar-input">
+                    <img style="cursor: pointer" src="{{ user.avatar_image }}" alt="avatar">
+                </label>
+                {{ form.avatar }}
+
+            </div>
+        </div>
+            <div class="form-group">
+                {{ form.first_name }}
+                <label class="floating-label" for="first-name">First Name</label>
+                {{ form.first_name.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.last_name }}
+                <label class="floating-label" for="last-name">Last Name</label>
+                {{ form.last_name.errors }}
+            </div>
+
+            <!-- Username -->
+            <div class="form-group">
+                {{ form.username }}
+                <label class="floating-label" for="username">Username</label>
+                {{ form.username.errors }}
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                {{ form.email }}
+                <label class="floating-label" for="email">Email</label>
+                {{ form.email.errors }}
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+                {{ form.phone_number }}
+                <label class="floating-label" for="phone">Phone Number</label>
+                {{ form.phone_number.errors }}
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group">
+                {{ form.bio }}
+                <label class="floating-label" for="bio">Bio</label>
+                {{ form.bio.errors }}
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+                <label class="floating-label" for="gender">Gender</label>
+                {{ form.gender }}
+                {{ form.gender.errors }}
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+                {{ form.date_of_birth }}
+                <label class="floating-label" for="dob">Date of Birth</label>
+                {{ form.date_of_birth.errors }}
+            </div>
+
+            <!-- Account Type -->
+            <div class="form-group">
+                {{ form.account_type }}
+                <label class="floating-label" for="account_type">Account Type</label>
+                {{ form.account_type.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.location }}
+                <label class="floating-label" for="location">Location</label>
+                {{ form.location.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.website }}
+                <label class="floating-label" for="website">Website</label>
+                {{ form.website.errors }}
+            </div>
+
+            <button style="cursor: pointer; outline: none" type="submit" class="save-btn">Save</button>
+        </form>
+    </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+            var div = document.querySelector(".header-image");
+            var content = div.innerHTML;
+            div.innerHTML = content.replace("Currently: ", "<span class='hidden'>Currently:</span>");
+
+        });
+
+document.addEventListener("DOMContentLoaded", function() {
+            var div = document.querySelector(".header-image");
+            var content = div.innerHTML;
+            div.innerHTML = content.replace("Change:", "<span class='hidden'>Change:</span>");
+        });
+
+document.addEventListener("DOMContentLoaded", function() {
+            var div = document.querySelector(".header-image");
+            var content = div.innerHTML;
+            div.innerHTML = content.replace("Change:", "<span class='hidden'>Change:</span>");
+        });
+
+document.addEventListener("DOMContentLoaded", function() {
+            var div = document.querySelector(".profile-photo");
+            var content = div.innerHTML;
+            div.innerHTML = content.replace("Change:", "<span class='hidden'>Change:</span>");
+        });
+
+document.addEventListener("DOMContentLoaded", function() {
+            var div = document.querySelector(".profile-photo");
+            var content = div.innerHTML;
+            div.innerHTML = content.replace("Currently:", "<span class='hidden'>Change:</span>");
+        });
+var dob = document.getElementById('dob')
+dob.value = "{{ user.date_of_birth.month }}/{{ user.date_of_birth.day }}/{{ user.date_of_birth.year }}"
+$(function() {
+    $('#dob').datepicker();
+});
+
+const div = document.querySelectorAll('.form-group ul')
+
+const ul = document.querySelectorAll('.form-group ul li')
+
+var errorMessage = ul.innerHTML
+
+var errors = null
+
+for (var i = 0; i < div.length; i++) {
+    var errorMessage = div[i].innerText;
+    const newElement = document.createElement('p');
+    newElement.textContent = errorMessage;
+    newElement.className = 'errorlist';
+    div[i].replaceWith(newElement);
+}
+
+function back () {
+    history.back()
+}
+
+</script>
+</body>
+</html>
