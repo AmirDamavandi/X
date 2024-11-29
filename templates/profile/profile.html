@@ -37,7 +37,7 @@
     </div>
     <div class="pre-bio">
     {% if user == active_user %}
-        <a methods="post" class="edit-profile">Edit profile</a>
+        <a style="text-decoration: none" href="{% url 'accounts:EditProfileView' %}" class="edit-profile">Edit profile</a>
     {% elif not following %}
         <form action="{% url 'accounts:FollowView' user.username %}" method="post">
             {% csrf_token %}

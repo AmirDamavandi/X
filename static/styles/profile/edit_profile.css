@@ -105,7 +105,8 @@ body {
 
 .form-group {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    display: inline;
 }
 
 .floating-label {
@@ -143,3 +144,45 @@ input, textarea, select {
 input:focus, textarea:focus, select:focus {
     border-color: #1d9bf0;
 }
+
+
+label[for="header-clear_id"] {
+    display: none;
+    visibility: hidden;
+}
+
+a[href^="/media/"] {
+    display: none;
+}
+
+#header-clear_id {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+label[for="gender"] {
+    color: #1d9bf0;
+    top: -10px;
+    left: 5px;
+    font-size: 12px;
+
+}
+
+label[for="account_type"] {
+    color: #1d9bf0;
+    top: -10px;
+    left: 5px;
+    font-size: 12px;
+
+}
+
+.errorlist {
+    font-family: Arial, sans-serif;
+    color: rgb(244, 33, 46, 1);
+    position: absolute;
+    font-weight: 300;
+}
+

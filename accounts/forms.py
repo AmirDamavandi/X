@@ -1,8 +1,12 @@
 from django import forms
 import re
+
+from sqlparse import parse
+
 from .models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+import phonenumbers
 
 
 class SignUpForm(forms.ModelForm):
@@ -57,3 +61,44 @@ class LoginForm(forms.Form):
             else:
                 self.add_error('password', 'Incorrect password.')
         return self.cleaned_data
+
+
+class UserEditModelForm(forms.ModelForm):
+    class Meta:
+        model = User
+        exclude = (
+            'is_verified', 'date_joined', 'relation', 'is_admin',
+            'is_active', 'is_suspended', 'is_verified', 'password', 'last_login'
+        )
+        widgets = {
+            'first_name': forms.TextInput(attrs={'id': 'first-name', 'placeholder': ' '}),
+            'last_name': forms.TextInput(attrs={'id': 'last-name', 'placeholder': ' '}),
+            'username': forms.TextInput(attrs={'id': 'email', 'placeholder': ' '}),
+            'email': forms.EmailInput(attrs={'id': 'email', 'placeholder': ' '}),
+            'phone_number': forms.TextInput(attrs={'id': 'phone', 'placeholder': ' '}),
+            'bio': forms.Textarea(attrs={'id': 'bio', 'placeholder': ' ', 'rows': 2}),
+            'gender': forms.Select(attrs={'id': 'gender', 'placeholder': ' '}),
+            'date_of_birth': forms.DateInput(attrs={'id': 'dob', 'placeholder': ' '}),
+            'account_type': forms.Select(attrs={'id': 'account_type', 'placeholder': ' '}),
+            'location': forms.TextInput(attrs={'id': 'location', 'placeholder': ' '}),
+            'website': forms.TextInput(attrs={'id': 'website', 'placeholder': ' '}),
+            'header': forms.ClearableFileInput(attrs={'id': 'header-input', 'hidden': 'hidden'}),
+            'avatar': forms.ClearableFileInput(attrs={'id': 'avatar-input', 'hidden': 'hidden'}),
+
+        }
+
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        if not phone_number is None:
+            try:
+                parsed_phone_number = phonenumbers.parse(phone_number)
+                is_a_valid_phone_number = phonenumbers.is_valid_number(parsed_phone_number)
+                if is_a_valid_phone_number:
+                    self.cleaned_data['phone_number'] = parsed_phone_number
+                else:
+                    raise ValidationError('Enter a valid phone number')
+            except phonenumbers.NumberParseException:
+                raise ValidationError('Enter phone number with country code, like "+code" ')
+
+        return phone_number
