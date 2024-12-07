@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-	<div class="home">
+	<div id="home-container" class="home">
                 <div class="home-title">
                     Home
                     <div class="top-tweet-container">
@@ -24,7 +24,7 @@
 
                     </div>
                     <div class="text-boxx">
-                        <form method="post" action="{% url 'tweets:Home' %}" enctype="multipart/form-data">
+                        <form id="tweet-submit" method="post" action="{% url 'tweets:Home' %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ tweet_form.tweet }}
                             <button style="border: none; cursor: pointer" class="tweet-button" type="submit">
@@ -58,5 +58,34 @@
                 </div>
                 
 {% include 'base/tweets/tweets.html' %}
+<script>
+    
+$(document).ready(function () {
+    $('#tweet-submit').on('submit', function (e) {
+        e.preventDefault();
 
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                var tweetBox = $('#home-container .tweet-box')[0];
+                $(tweetBox).after(data['rendered_tweet']);
+                var tweetInput = $('#id_tweet')[0];
+                tweetInput.value = '';
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
+
+    
+</script>
+</div>
 {% endblock %}

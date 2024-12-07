@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-
 from .models import *
 from django.views.generic import View
 from .forms import *
+from django.template.loader import render_to_string
 # Create your views here.
 
 class Home(LoginRequiredMixin, View):
@@ -28,7 +29,14 @@ class Home(LoginRequiredMixin, View):
             media_form = MediaFormSet(request.POST, request.FILES, instance=tweet)
             if media_form.is_valid():
                 media_form.save()
-        return redirect('tweets:Home')
+            rendered_tweet = render_to_string('base/tweets/new_tweet.html', {'tweet': tweet})
+            return JsonResponse({
+                'status': 'ok',
+                'rendered_tweet': rendered_tweet,
+            })
+        return JsonResponse(
+            {'status': 'error', 'rendered_tweet': tweet_form.errors}
+        )
 
 class LikeTweetView(View):
     def post(self, request, tweet_id):

@@ -134,10 +134,10 @@
 <script>
     function back() {
         if (history.length > 1) {
-            history.back()
+            history.back();
         }
         else {
-            window.location.href = '{% url 'tweets:Home' %}'
+            window.location.href = '{% url 'tweets:Home' %}';
         }
     }
 </script>

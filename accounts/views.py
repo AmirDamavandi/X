@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
 from django.views.generic import View
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login, authenticate
 from .models import *
 from django.core import validators
@@ -100,7 +100,11 @@ class FollowView(LoginRequiredMixin, View):
             follow = Relation(from_user=self.request.user, to_user=following_user)
             follow.save()
         next_url = request.POST.get('next', '/')
-        return redirect(next_url)
+        # return redirect(next_url)
+        # return JsonResponse(
+        #     {'data': 'ok'},
+        #     status=200
+        # )
 
 
 class UnfollowView(LoginRequiredMixin, View):

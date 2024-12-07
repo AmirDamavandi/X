@@ -172,7 +172,7 @@ for (var i = 0; i < div.length; i++) {
 }
 
 function back () {
-    history.back()
+    window.location.href = {% url 'accounts:ProfileView' user.username %}
 }
 
 </script>
