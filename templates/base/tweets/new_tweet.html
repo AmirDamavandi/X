@@ -47,8 +47,8 @@
                         <div class="content-title">
                             <div class="title-container">
                                 <span class="post-title">{{ tweet.user_tweeted.full_name }}</span>
-                                {% if tweet.tweet_user.is_verified %}
-                                	<img src="{% static 'twitter-icons/verified.png' %}" class="verified" alt="verified">
+                                {% if tweet.user_tweeted.is_verified %}
+                                    <img src="{% static 'twitter-icons/verified.png' %}" class="verified" alt="verified">
                                 {% endif %}
                                 <span class="title-date">@{{ tweet.user_tweeted }} <b>&#183;</b> {{ tweet.published_time }} </span>
                                 <span class="dot">...</span>

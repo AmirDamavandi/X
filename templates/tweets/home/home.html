@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+    <body>
 	<div id="home-container" class="home">
                 <div class="home-title">
                     Home
@@ -85,7 +86,44 @@ $(document).ready(function () {
     });
 });
 
-    
+function LikeTweet(url) {
+    $.post(url,
+        $('#like-tweet').serialize(),
+        function (data) {
+            if (data['is_liked'] === true) {
+                let Form = $(`form[action="${url}"]`)[0];
+                let flexBox = $(Form).parents('.flexbox')[0];
+                let likeIcon = $(flexBox).find('.like-icon .line-icons-icon')[0];
+                let likeCount = $(flexBox).find('.count3')[0];
+                $(likeIcon).attr('src', '{% static 'twitter-icons/fill-heart.png' %}');
+                if (likeCount.innerText !== '') {
+                    likeCount.innerText = parseInt(likeCount.innerText) + 1;
+                    $(likeCount).css('color', 'rgb(235, 35, 128)');
+                } else {
+                    likeCount.innerText = 1;
+                    $(likeCount).css('color', 'rgb(235, 35, 128)');
+
+                }
+            } else {
+                $.post(url.replace('like', 'unlike'), $('#unlike-tweet').serialize(), function (data) {
+                    let Form = $(`form[action="${url}"]`)[0];
+                    let flexBox = $(Form).parents('.flexbox')[0];
+                    let likeIcon = $(flexBox).find('.like-icon .line-icons-icon')[0];
+                    let likeCount = $(flexBox).find('.count3')[0];
+                    $(likeIcon).attr('src', '{% static 'twitter-icons/heart.png' %}');
+                    if (likeCount.innerText !== '1') {
+                        likeCount.innerText = parseInt(likeCount.innerText) - 1;
+                        $(likeCount).css('color', 'rgb(113, 118, 123)');
+                    } else {
+                        likeCount.innerText = ''
+                    }
+                });
+
+            }
+        });
+}
+
 </script>
 </div>
+    </body>
 {% endblock %}

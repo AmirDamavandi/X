@@ -49,9 +49,9 @@
                         
                         <div class="content-title">
                             <div class="title-container">
-                                <span class="post-title">{{ tweet.user_tweeted.full_name }}</span>
-                                {% if tweet.tweet_user.is_verified %}
-                                	<img src="{% static 'twitter-icons/verified.png' %}" class="verified" alt="verified">
+                                <span class="post-title">{{ tweet.user_tweeted.full_name }} {{ '  ' }} </span>
+                                {% if tweet.user_tweeted.is_verified %}
+                                    <img src="{% static 'twitter-icons/verified.png' %}" class="verified" alt="verified">
                                 {% endif %}
                                 <span class="title-date">@{{ tweet.user_tweeted }} <b>&#183;</b> {{ tweet.published_time }} </span>
                                 <span class="dot">...</span>
@@ -97,7 +97,7 @@
                                             <input type="hidden" name="next" value="{{ request.path }}">
                                             <button type="submit" class="retweet-icon"><img src="{% static 'twitter-icons/repeated.png' %}" class="line-icons-icon" alt=""></button>
                                         </form>
-                                            <div style="color: #00ba7c" class="count2">{{ tweet.retweet_count }}</div>
+                                        <div style="color: #00ba7c" class="count2">{{ tweet.retweet_count }}</div>
                                         {% endif %} 
                                         
                                     </div>
@@ -106,22 +106,20 @@
                                     <div class="line-icon3">
                                         {% user_like tweet user as liked  %}
                                         {% if not liked %}
-                                        	<form method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
+                                        	<form id="like-tweet" method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
                                             {% csrf_token %}
                                                 <input type="hidden" name="next" value="{{ request.path }}">
-                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
                                             </form>
+                                            <button onclick="LikeTweet('{% url 'tweets:LikeTweetView' tweet.id %}')" type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
                                             <div class="count3">{{ tweet.like_count }}</div>
                                         {% else %}
-                                            <form method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
+                                            <form id="unlike-tweet" method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
                                             {% csrf_token %}
                                                 <input type="hidden" name="next" value="{{ request.path }}">
                                                 <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
                                             </form>
                                             <div style="color: #f91881" class="count3">{{ tweet.like_count }}</div>
                                         {% endif %}
-                                        
-                                    
                                     </div>
                                 </div>
                                 <div class="line-icon-share">
@@ -219,34 +217,35 @@
                                         	<input type="hidden" name="next" value="{{ request.path }}">
                                             <button type="submit" class="retweet-icon"><img src="{% static 'twitter-icons/repeat.png' %}" class="line-icons-icon" alt=""></button>
                                         </form>
-                                            <div class="count2">{{ tweet.retweet_count }}</div>
+                                        <div class="count2">{{ tweet.retweet_count }}</div>
                                         {% else %}
                                         <form method="post" action="{% url 'tweets:UndoRetweetView' tweet.id %}">
                                         {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.path }}">
                                             <button type="submit" class="retweet-icon"><img src="{% static 'twitter-icons/repeated.png' %}" class="line-icons-icon" alt=""></button>
                                         </form>
-                                            <div style="color: #00ba7c" class="count2">{{ tweet.retweet_count }}</div>
-                                        {% endif %} 
+                                        <div style="color: #00ba7c" class="count2">{{ tweet.retweet_count }}</div>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
                                         {% user_like tweet user as liked  %}
                                         {% if not liked %}
-                                            <form method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
+                                            <form id="like-tweet" method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="next" value="{{ request.path }}">
-                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
                                             </form>
+                                               <button onclick="LikeTweet('{% url 'tweets:LikeTweetView' tweet.id %}')" type="submit" class="like-icon"><img src="{% static 'twitter-icons/heart.png' %}" class="line-icons-icon" alt=""></button>
+                                            <div class="count3">{{ tweet.like_count }}</div>
                                         {% else %}
-                                            <form method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
+                                            <form id="unlike-tweet" method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
                                             {% csrf_token %}
                                                 <input type="hidden" name="next" value="{{ request.path }}">
                                                 <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
                                             </form>
+                                            <div style="color: #f91881" class="count3">{{ tweet.like_count }}</div>
                                         {% endif %}
-                                        <div style="color: #f91881" class="count3">{{ tweet.like_count }}</div>
                                     </div>
                                 </div>
                                 <div class="line-icon-share">
