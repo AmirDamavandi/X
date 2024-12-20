@@ -116,8 +116,8 @@
                                             <form id="unlike-tweet" method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
                                             {% csrf_token %}
                                                 <input type="hidden" name="next" value="{{ request.path }}">
-                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
                                             </form>
+                                            <button onclick="UnlikeTweet('{% url 'tweets:UnLikeTweetView' tweet.id %}')" type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
                                             <div style="color: #f91881" class="count3">{{ tweet.like_count }}</div>
                                         {% endif %}
                                     </div>
@@ -242,8 +242,8 @@
                                             <form id="unlike-tweet" method="post" action="{% url 'tweets:UnLikeTweetView' tweet.id %}">
                                             {% csrf_token %}
                                                 <input type="hidden" name="next" value="{{ request.path }}">
-                                                <button type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
                                             </form>
+                                            <button onclick="UnlikeTweet('{% url 'tweets:UnLikeTweetView' tweet.id %}')" type="submit" class="like-icon"><img src="{% static 'twitter-icons/fill-heart.png' %}" class="line-icons-icon" alt=""></button>
                                             <div style="color: #f91881" class="count3">{{ tweet.like_count }}</div>
                                         {% endif %}
                                     </div>

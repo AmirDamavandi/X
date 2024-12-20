@@ -57,17 +57,17 @@ class LikeTweetView(View):
 
 class UnLikeTweetView(View):
     def post(self, request, tweet_id):
-        is_liked = True
+        unliked = False
         user = request.user
         tweet = Tweet.objects.get(pk=tweet_id)
         liked_before = Like.objects.filter(user=user, tweet=tweet).exists()
         if liked_before:
             dislike = Like.objects.get(user=user, tweet_id=tweet_id)
             dislike.delete()
-            is_liked = False
+            unliked = True
         # next_path = request.POST.get('next', '/')
         return JsonResponse(
-            {'is_liked': is_liked}
+            {'unliked': unliked}
         )
 
 
