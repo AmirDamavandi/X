@@ -48,8 +48,6 @@ class LikeTweetView(View):
             new_like = Like(user=user, tweet_id=tweet_id)
             new_like.save()
             is_liked = True
-        # next_path = request.POST.get('next', '/')
-        # return redirect(next_path)
         return JsonResponse(
             {'is_liked': is_liked}
         )
@@ -65,7 +63,6 @@ class UnLikeTweetView(View):
             dislike = Like.objects.get(user=user, tweet_id=tweet_id)
             dislike.delete()
             unliked = True
-        # next_path = request.POST.get('next', '/')
         return JsonResponse(
             {'unliked': unliked}
         )
@@ -73,14 +70,17 @@ class UnLikeTweetView(View):
 
 class RetweetView(View):
     def post(self, request, tweet_id):
+        retweeted = False
         user = request.user
         tweet = Tweet.objects.get(pk=tweet_id)
         retweeted_before = Retweet.objects.filter(user=user, tweet=tweet).exists()
         if not retweeted_before:
             new_retweet = Retweet(user=user, tweet=tweet)
             new_retweet.save()
-        next_path = request.POST.get('next', '/')
-        return redirect(next_path)
+            retweeted = True
+        return JsonResponse(
+            {'retweeted': retweeted}
+        )
 
 class UndoRetweetView(View):
     def post(self, request, tweet_id):

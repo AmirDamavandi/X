@@ -7,5 +7,5 @@ urlpatterns = [
     path('like/<int:tweet_id>/', LikeTweetView.as_view(), name='LikeTweetView'),
     path('unlike/<int:tweet_id>/', UnLikeTweetView.as_view(), name='UnLikeTweetView'),
     path('retweet/<int:tweet_id>/', RetweetView.as_view(), name='RetweetView'),
-    path('undoretweet/<int:tweet_id>/', UndoRetweetView.as_view(), name='UndoRetweetView'),
+    path('unretweet/<int:tweet_id>/', UndoRetweetView.as_view(), name='UndoRetweetView'),
 ]
