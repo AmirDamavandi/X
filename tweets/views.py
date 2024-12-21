@@ -84,11 +84,14 @@ class RetweetView(View):
 
 class UndoRetweetView(View):
     def post(self, request, tweet_id):
+        unretweeted = False
         user = request.user
         tweet = Tweet.objects.get(pk=tweet_id)
         retweeted_before = Retweet.objects.filter(user=user, tweet=tweet).exists()
         if retweeted_before:
             retweet = Retweet.objects.get(user=user, tweet_id=tweet_id)
             retweet.delete()
-        next_path = request.POST.get('next', '/')
-        return redirect(next_path)
+            unretweeted = True
+        return JsonResponse(
+            {'unretweeted': unretweeted}
+        )

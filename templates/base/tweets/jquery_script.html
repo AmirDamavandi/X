@@ -129,5 +129,38 @@ function RetweetTweet(url) {
     }
     });
 }
+function UnretweetTweet(url) {
+        $.post(url, $('#unretweet').serialize(), function (data) {
+        if (data['unretweeted'] === true) {
+            let Form = $(`form[action="${url}"]`)[0];
+            let flexBox = $(Form).parents('.flexbox')[0];
+            let likeIcon = $(flexBox).find('.retweet-icon .line-icons-icon')[0];
+            let likeCount = $(flexBox).find('.count2')[0];
+            $(likeIcon).attr('src', '{% static 'twitter-icons/repeat.png' %}');
+            if (likeCount.innerText !== '1') {
+                    likeCount.innerText = parseInt(likeCount.innerText) - 1;
+                    $(likeCount).css('color', 'rgb(113, 118, 123)');
+                } else {
+                    likeCount.innerText = '';
 
+                }
+
+        } else {
+            $.post(url.replace('unretweet', 'retweet'), $('#retweet-tweet').serialize(), function () {
+                let Form = $(`form[action="${url}"]`)[0];
+                let flexBox = $(Form).parents('.flexbox')[0];
+                let likeIcon = $(flexBox).find('.retweet-icon .line-icons-icon')[0];
+                let likeCount = $(flexBox).find('.count2')[0];
+                $(likeIcon).attr('src', '{% static 'twitter-icons/repeated.png' %}');
+                if (likeCount.innerText !== '') {
+                    likeCount.innerText = parseInt(likeCount.innerText) + 1;
+                    $(likeCount).css('color', 'rgb(8, 219, 135)');
+                } else {
+                    likeCount.innerText = 1;
+                }
+            });
+        }
+    });
+    
+}
 </script>
