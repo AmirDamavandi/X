@@ -111,10 +111,14 @@ class UnfollowView(LoginRequiredMixin, View):
     def post(self, request, username):
         unfollowing_user = User.objects.get(username=username)
         query = Relation.objects.filter(from_user=self.request.user, to_user=unfollowing_user)
+        unfollowed = False
         if query.exists():
             unfollow = Relation.objects.get(from_user=self.request.user, to_user=unfollowing_user)
             unfollow.delete()
-        return redirect('accounts:ProfileView', username)
+            unfollowed = True
+        return JsonResponse(
+            {'unfollowed': unfollowed},
+        )
 
 
 

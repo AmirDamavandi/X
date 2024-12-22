@@ -23,5 +23,27 @@ function Follow (url) {
     })
 }
 
-
+function Unfollow (url) {
+    $.post(url, $('#unfollow-user').serialize(), function (data) {
+        if (data['unfollowed'] === true) {
+            const ButtonA = $('#unfollow-button')[0];
+            ButtonA.className = 'following-user'
+            ButtonA.style.display = 'inline-block';
+            ButtonA.style.backgroundColor = 'white';
+            ButtonA.style.cursor = 'pointer';
+            ButtonA.style.color = 'black';
+            ButtonA.innerHTML = 'Follow';
+        } else {
+            $.post(url.replace('unfollow', 'follow'), $('#unfollow-user').serialize(), function () {
+                let ButtonB = $('#unfollow-button')[0];
+                ButtonB.className = 'unfollowing-user';
+                ButtonB.style.display = 'inline-block';
+                ButtonB.style.backgroundColor = 'black';
+                ButtonB.style.cursor = 'pointer';
+                ButtonB.style.color = 'white';
+                ButtonB.innerHTML = ''
+            })
+        }
+    })
+}
 </script>
