@@ -96,15 +96,14 @@ class FollowView(LoginRequiredMixin, View):
     def post(self, request, username):
         query = Relation.objects.filter(from_user__username=self.request.user, to_user__username=username)
         following_user = User.objects.get(username=username)
+        followed = False
         if not query.exists():
             follow = Relation(from_user=self.request.user, to_user=following_user)
             follow.save()
-        next_url = request.POST.get('next', '/')
-        # return redirect(next_url)
-        # return JsonResponse(
-        #     {'data': 'ok'},
-        #     status=200
-        # )
+            followed = True
+        return JsonResponse(
+            {'followed': followed},
+        )
 
 
 class UnfollowView(LoginRequiredMixin, View):
@@ -115,8 +114,8 @@ class UnfollowView(LoginRequiredMixin, View):
         if query.exists():
             unfollow = Relation.objects.get(from_user=self.request.user, to_user=unfollowing_user)
             unfollow.delete()
-        next_url = request.POST.get('next', '/')
-        return redirect(next_url)
+        return redirect('accounts:ProfileView', username)
+
 
 
 

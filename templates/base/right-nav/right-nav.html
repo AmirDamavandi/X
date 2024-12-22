@@ -106,53 +106,53 @@
                                 Who to follow
                             </div>
                             {% for user in users %}
-                                <div class="follow-list-container">  
-                                    
-                                    <div class="follow-1">
+                                <div style="cursor: pointer" class="follow-list-container">
+
+                                    <div onclick="window.location.href = '{% url 'accounts:ProfileView' user.username %}'" class="follow-1">
                                         <div class="follow-container-profile-container">
                                         {% if user.avatar %}
                                             <img src="{{ user.avatar.url }}" class="follow-profile-1" alt="user avatar">
                                         {% else %}
                                             <img src="/../static/icons/x-icon/default_profile_400x400.png" class="follow-profile-1" alt="user avatar">
                                         {% endif %}
-                                            <div class="profile-container-tooltip">
-                                                <div class="channel-tooltip">
-                                                    {% if user.avatar %}
-                                                    	<img class="follow-profile-tooltip" src="{{ user.avatar.url }}" alt="user avatar">
-                                                    {% else %}
-                                                        <img class="follow-profile-tooltip" src="/../static/icons/x-icon/default_profile_400x400.png" alt="user avatar">
-                                                    {% endif %} 
-                                                    <form action="{% url 'accounts:FollowView' user.username %}">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="next" value="{{ request.path }}">
-                                                        <button style="cursor: pointer" type="submit" class="follow-button-tooltip">Follow</button>
-                                                    </form>
-                                                </div>   
-                                                
-                                                <div>
-                                                    <div>
-                                                        <span class="follow-name-tooltip">{{ user.full_name }}</span>
-                                                        {% if user.is_verified %}
-                                                        	<img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">
-                                                        {% endif %} 
-                                                        
-                                                        <span class="follow-username-tooltip">@{{ user.username }}</span>
-                                                    </div>
-                                                    <div class="follow-tooltip-content">
-                                                        {% if user.bio %}
-                                                        	{{ user.bio }}
-                                                        {% else %}
-                                                            <br/>
-                                                        {% endif %} 
-                                                        
-                                                    </div>
-                                                    <div class="followers-following">
-                                                        <b>{{ user.following_count }}</b> <span class="followers-count-tooltip">Following</span>
-                                                        <b>{{ user.follower_count }}</b> <span class="followers-count-tooltip">Followers</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
+{#                                            <div class="profile-container-tooltip">#}
+{#                                                <div class="channel-tooltip">#}
+{#                                                    {% if user.avatar %}#}
+{#                                                    	<img class="follow-profile-tooltip" src="{{ user.avatar.url }}" alt="user avatar">#}
+{#                                                    {% else %}#}
+{#                                                        <img class="follow-profile-tooltip" src="/../static/icons/x-icon/default_profile_400x400.png" alt="user avatar">#}
+{#                                                    {% endif %} #}
+{#                                                    <form id="follow-user" action="{% url 'accounts:FollowView' user.username %}">#}
+{#                                                        {% csrf_token %}#}
+{#                                                        <input type="hidden" name="next" value="{{ request.path }}">#}
+{#                                                    </form>#}
+{#                                                <button onclick="follow('{% url 'accounts:FollowView' user.username %}')" style="cursor: pointer" type="submit" class="follow-button-tooltip">Follow</button>#}
+{#                                                </div>   #}
+
+{#                                                <div>#}
+{#                                                    <div>#}
+{#                                                        <span class="follow-name-tooltip">{{ user.full_name }}</span>#}
+{#                                                        {% if user.is_verified %}#}
+{#                                                        	<img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">#}
+{#                                                        {% endif %} #}
+{##}
+{#                                                        <span class="follow-username-tooltip">@{{ user.username }}</span>#}
+{#                                                    </div>#}
+{#                                                    <div class="follow-tooltip-content">#}
+{#                                                        {% if user.bio %}#}
+{#                                                        	{{ user.bio }}#}
+{#                                                        {% else %}#}
+{#                                                            <br/>#}
+{#                                                        {% endif %} #}
+{##}
+{#                                                    </div>#}
+{#                                                    <div class="followers-following">#}
+{#                                                        <b>{{ user.following_count }}</b> <span class="followers-count-tooltip">Following</span>#}
+{#                                                        <b>{{ user.follower_count }}</b> <span class="followers-count-tooltip">Followers</span>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+
                                         </div>
                                         <div>
                                             {% if user.is_verified %}
@@ -162,13 +162,21 @@
                                             <span class="follow-username">@{{ user.username }}</span>
                                         </div>
                                         
-                                        <div>
-                                            <form action="{% url 'accounts:FollowView' user.username %}" method="post">
+                                        <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%; padding: 10px;">
+                                            <form id="follow-user-c" action="{% url 'accounts:FollowView' user.username %}" method="post" style="margin: 0; padding: 0;">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="next" value="{{ request.path }}">
-                                                <input style="cursor: pointer" type="submit" class="follow-button" value="Follow">
                                             </form>
+                                        
+                                            <button onclick="event.stopPropagation(); clickFollow('{% url 'accounts:FollowView' user.username %}', '{{ user.username }}')" 
+                                                    type="submit" 
+                                                    style="background-color: #ffffff; text-decoration: none; cursor: pointer; color: black; padding: 10px 20px; font-weight: 700" 
+                                                    id="{{ user.username }}"
+                                                    class="following-user">
+                                                Follow
+                                            </button>
                                         </div>
+
                                     </div>
                                 </div>
                         {% endfor %}
@@ -184,4 +192,34 @@
                     
                 </div>
                          
-            </div>  
+            </div>
+<script>
+    
+
+function clickFollow (url, username) {
+    $.post(url, $('#follow-user-c').serialize(), function (data) {
+        if (data['followed'] === true) {
+            const ButtonA = $(`#${username}`)[0];
+            ButtonA.className = 'unfollowing-user'
+            ButtonA.style.display = 'inline-block';
+            ButtonA.style.backgroundColor = 'black';
+            ButtonA.style.cursor = 'pointer';
+            ButtonA.style.color = 'white';
+            ButtonA.innerHTML = '';
+        } else {
+            $.post(url.replace('follow', 'unfollow'), $('#follow-user-c').serialize(), function () {
+                let ButtonB = $(`#${username}`)[0];
+                ButtonB.className = 'following-user'
+                ButtonB.style.display = 'inline-block';
+                ButtonB.style.backgroundColor = 'white';
+                ButtonB.style.cursor = 'pointer';
+                ButtonB.style.color = 'black';
+                ButtonB.innerHTML = 'Follow'
+            })
+        }
+    })
+}
+    
+</script>
+
+
