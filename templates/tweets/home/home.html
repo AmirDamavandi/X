@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-	<div class="home">
+    <body>
+	<div id="home-container" class="home">
                 <div class="home-title">
                     Home
                     <div class="top-tweet-container">
@@ -24,7 +25,7 @@
 
                     </div>
                     <div class="text-boxx">
-                        <form method="post" action="{% url 'tweets:Home' %}" enctype="multipart/form-data">
+                        <form id="tweet-submit" method="post" action="{% url 'tweets:Home' %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ tweet_form.tweet }}
                             <button style="border: none; cursor: pointer" class="tweet-button" type="submit">
@@ -58,5 +59,7 @@
                 </div>
                 
 {% include 'base/tweets/tweets.html' %}
-
+{% include 'base/tweets/jquery_script.html' %}
+</div>
+    </body>
 {% endblock %}

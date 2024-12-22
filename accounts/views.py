@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
 from django.views.generic import View
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login, authenticate
 from .models import *
 from django.core import validators
@@ -96,11 +96,14 @@ class FollowView(LoginRequiredMixin, View):
     def post(self, request, username):
         query = Relation.objects.filter(from_user__username=self.request.user, to_user__username=username)
         following_user = User.objects.get(username=username)
+        followed = False
         if not query.exists():
             follow = Relation(from_user=self.request.user, to_user=following_user)
             follow.save()
-        next_url = request.POST.get('next', '/')
-        return redirect(next_url)
+            followed = True
+        return JsonResponse(
+            {'followed': followed},
+        )
 
 
 class UnfollowView(LoginRequiredMixin, View):
@@ -108,11 +111,15 @@ class UnfollowView(LoginRequiredMixin, View):
     def post(self, request, username):
         unfollowing_user = User.objects.get(username=username)
         query = Relation.objects.filter(from_user=self.request.user, to_user=unfollowing_user)
+        unfollowed = False
         if query.exists():
             unfollow = Relation.objects.get(from_user=self.request.user, to_user=unfollowing_user)
             unfollow.delete()
-        next_url = request.POST.get('next', '/')
-        return redirect(next_url)
+            unfollowed = True
+        return JsonResponse(
+            {'unfollowed': unfollowed},
+        )
+
 
 
 

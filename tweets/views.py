@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-
 from .models import *
 from django.views.generic import View
 from .forms import *
+from django.template.loader import render_to_string
 # Create your views here.
 
 class Home(LoginRequiredMixin, View):
@@ -28,50 +29,69 @@ class Home(LoginRequiredMixin, View):
             media_form = MediaFormSet(request.POST, request.FILES, instance=tweet)
             if media_form.is_valid():
                 media_form.save()
-        return redirect('tweets:Home')
+            rendered_tweet = render_to_string('base/tweets/new_tweet.html', {'tweet': tweet})
+            return JsonResponse({
+                'status': 'ok',
+                'rendered_tweet': rendered_tweet,
+            })
+        return JsonResponse(
+            {'status': 'error', 'rendered_tweet': tweet_form.errors}
+        )
 
 class LikeTweetView(View):
     def post(self, request, tweet_id):
+        is_liked = False
         user = request.user
         tweet = Tweet.objects.get(pk=tweet_id)
         liked_before = Like.objects.filter(user=user, tweet=tweet).exists()
         if not liked_before:
             new_like = Like(user=user, tweet_id=tweet_id)
             new_like.save()
-        next_path = request.POST.get('next', '/')
-        return redirect(next_path)
+            is_liked = True
+        return JsonResponse(
+            {'is_liked': is_liked}
+        )
 
 
 class UnLikeTweetView(View):
     def post(self, request, tweet_id):
+        unliked = False
         user = request.user
         tweet = Tweet.objects.get(pk=tweet_id)
         liked_before = Like.objects.filter(user=user, tweet=tweet).exists()
         if liked_before:
             dislike = Like.objects.get(user=user, tweet_id=tweet_id)
             dislike.delete()
-        next_path = request.POST.get('next', '/')
-        return redirect(next_path)
+            unliked = True
+        return JsonResponse(
+            {'unliked': unliked}
+        )
 
 
 class RetweetView(View):
     def post(self, request, tweet_id):
+        retweeted = False
         user = request.user
         tweet = Tweet.objects.get(pk=tweet_id)
         retweeted_before = Retweet.objects.filter(user=user, tweet=tweet).exists()
         if not retweeted_before:
             new_retweet = Retweet(user=user, tweet=tweet)
             new_retweet.save()
-        next_path = request.POST.get('next', '/')
-        return redirect(next_path)
+            retweeted = True
+        return JsonResponse(
+            {'retweeted': retweeted}
+        )
 
 class UndoRetweetView(View):
     def post(self, request, tweet_id):
+        unretweeted = False
         user = request.user
         tweet = Tweet.objects.get(pk=tweet_id)
         retweeted_before = Retweet.objects.filter(user=user, tweet=tweet).exists()
         if retweeted_before:
             retweet = Retweet.objects.get(user=user, tweet_id=tweet_id)
             retweet.delete()
-        next_path = request.POST.get('next', '/')
-        return redirect(next_path)
+            unretweeted = True
+        return JsonResponse(
+            {'unretweeted': unretweeted}
+        )

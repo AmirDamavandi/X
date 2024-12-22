@@ -102,3 +102,10 @@ class UserEditModelForm(forms.ModelForm):
                 raise ValidationError('Enter phone number with country code, like "+code" ')
 
         return phone_number
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        pattern = r"^[\w]+\Z"
+        if not re.match(pattern, username):
+            raise ValidationError('Enter a valid username. contain only letters, numbers, and _')
+        return username
