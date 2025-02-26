@@ -11,6 +11,8 @@ def active_user(request):
 def suggest_to_follow(request):
     if not request.user.is_authenticated:
         return {}
+    elif request.user.is_authenticated and not User.objects.count() > 1:
+        return {}
     authenticated_user = request.user
     followers = None
     authenticated_user_followings = []
