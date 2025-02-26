@@ -83,7 +83,7 @@
                                 
                                 <div class="line-icon-2">
                                     <div class="line-icon2">
-                                        {% user_retweet tweet user as retweeted %}
+                                        {% user_retweet tweet request.user as retweeted %}
                                         {% if not retweeted %}
                                         <form id="retweet-tweet" method="post" action="{% url 'tweets:RetweetView' tweet.id %}">
                                             {% csrf_token %}
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
-                                        {% user_like tweet user as liked  %}
+                                        {% user_like tweet request.user as liked  %}
                                         {% if not liked %}
                                         	<form id="like-tweet" method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
                                             {% csrf_token %}
@@ -189,15 +189,6 @@
                                 {{ tweet.tweet }}
                             </div>
 
-{#                            <div class="post-container">#}
-{#                                {% if tweet.tweet_medias.lower|slice:"-3:" == "mp4"%}#}
-{#                                    <a href="{{ tweet.tweet_medias }}"><video src="{{ tweet.tweet_medias }}" class="content-post"></video></a>#}
-{#                                {% else %}#}
-{#                                    <a href="{{ tweet.tweet_medias }}"><img src="{{ tweet.tweet_medias }}" class="content-post" alt=""></a>#}
-{#                                {% endif %} #}
-{#                                #}
-{#                            </div>#}
-
 
                             <div class="line-icon-container">
                                 <div class="line-icon-1">
@@ -210,7 +201,7 @@
 
                                 <div class="line-icon-2">
                                     <div class="line-icon2">
-                                    {% user_retweet tweet user as retweeted %}
+                                    {% user_retweet tweet request.user as retweeted %}
                                         {% if not retweeted %}
                                         <form id="retweet-tweet" method="post" action="{% url 'tweets:RetweetView' tweet.id %}">
                                             {% csrf_token %}
@@ -230,7 +221,7 @@
                                 </div>
                                 <div class="line-icon-3">
                                     <div class="line-icon3">
-                                        {% user_like tweet user as liked  %}
+                                        {% user_like tweet request.user as liked  %}
                                         {% if not liked %}
                                             <form id="like-tweet" method="post" action="{% url 'tweets:LikeTweetView' tweet.id %}">
                                                 {% csrf_token %}

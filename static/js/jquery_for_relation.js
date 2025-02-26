@@ -1,4 +1,3 @@
-<script>
 function Follow (url) {
     $.post(url, $('#follow-user').serialize(), function (data) {
         if (data['followed'] === true) {
@@ -46,4 +45,3 @@ function Unfollow (url) {
         }
     })
 }
-</script>

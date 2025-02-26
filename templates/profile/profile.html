@@ -125,11 +125,14 @@
         <div class="media">Media</div>
         <div class="likes">Likes</div>
       </div>
-{% include 'base/tweets/tweets.html' %}
-{% include 'base/tweets/jquery_script.html' %}
+{% include 'base/tweets/tweets.html' %} 
+<script src="{% static 'js/jquery.js' %}">
+</script>
+<script src="{% static 'js/jquery_for_relation.js' %}">
     
+</script>
 <script>
-    function back() {
+        function back() {
         if (history.length > 1) {
             history.back();
         }
@@ -138,8 +141,5 @@
         }
     }
 </script>
-{% include 'profile/script.html' %}
-
-  
 </div>
 {% endblock %}

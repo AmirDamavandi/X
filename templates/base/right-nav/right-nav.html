@@ -115,44 +115,6 @@
                                         {% else %}
                                             <img src="/../static/icons/x-icon/default_profile_400x400.png" class="follow-profile-1" alt="user avatar">
                                         {% endif %}
-{#                                            <div class="profile-container-tooltip">#}
-{#                                                <div class="channel-tooltip">#}
-{#                                                    {% if user.avatar %}#}
-{#                                                    	<img class="follow-profile-tooltip" src="{{ user.avatar.url }}" alt="user avatar">#}
-{#                                                    {% else %}#}
-{#                                                        <img class="follow-profile-tooltip" src="/../static/icons/x-icon/default_profile_400x400.png" alt="user avatar">#}
-{#                                                    {% endif %} #}
-{#                                                    <form id="follow-user" action="{% url 'accounts:FollowView' user.username %}">#}
-{#                                                        {% csrf_token %}#}
-{#                                                        <input type="hidden" name="next" value="{{ request.path }}">#}
-{#                                                    </form>#}
-{#                                                <button onclick="follow('{% url 'accounts:FollowView' user.username %}')" style="cursor: pointer" type="submit" class="follow-button-tooltip">Follow</button>#}
-{#                                                </div>   #}
-
-{#                                                <div>#}
-{#                                                    <div>#}
-{#                                                        <span class="follow-name-tooltip">{{ user.full_name }}</span>#}
-{#                                                        {% if user.is_verified %}#}
-{#                                                        	<img src="{% static 'twitter-icons/verified.png' %}" class="verified-icon">#}
-{#                                                        {% endif %} #}
-{##}
-{#                                                        <span class="follow-username-tooltip">@{{ user.username }}</span>#}
-{#                                                    </div>#}
-{#                                                    <div class="follow-tooltip-content">#}
-{#                                                        {% if user.bio %}#}
-{#                                                        	{{ user.bio }}#}
-{#                                                        {% else %}#}
-{#                                                            <br/>#}
-{#                                                        {% endif %} #}
-{##}
-{#                                                    </div>#}
-{#                                                    <div class="followers-following">#}
-{#                                                        <b>{{ user.following_count }}</b> <span class="followers-count-tooltip">Following</span>#}
-{#                                                        <b>{{ user.follower_count }}</b> <span class="followers-count-tooltip">Followers</span>#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                            </div>#}
-
                                         </div>
                                         <div>
                                             {% if user.is_verified %}
@@ -189,9 +151,7 @@
                         </div>
                         {% endif %}
                     </div>
-                    
                 </div>
-                         
             </div>
 <script>
     
