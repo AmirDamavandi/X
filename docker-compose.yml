@@ -1,0 +1,29 @@
+services:
+  project:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn spotify.wsgi -b 0.0.0.0:8000"
+    container_name: spotify
+    expose:
+      - 8000
+    volumes:
+      - .:.
+    networks:
+      - main
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:latest
+    container_name: spotify-nginx
+    depends_on:
+      - project
+    command: nginx -g 'daemon off;'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - main
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+networks:
+  main:
