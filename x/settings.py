@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ed9jo0(xe_ji_0320h-z-b@g%e4i4+bdy@=m7dl2u*t90xan-v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'app', '127.0.0.1']
 
 
 # Application definition
@@ -121,9 +121,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+
+STATIC_ROOT = BASE_DIR / 'static/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -136,3 +135,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = 'accounts:LoginView'
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://127.0.0.1']

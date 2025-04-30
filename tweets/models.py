@@ -148,7 +148,7 @@ class Media(models.Model):
         validators=[
             FileExtensionValidator(
                 allowed_extensions=[
-                    'png', 'gif', 'jpg', 'mp4', 'webm', 'ogg'
+                    'png', 'gif', 'jpg', 'mp4', 'webm', 'ogg', 'heic'
                 ],
             )
         ]
