@@ -13,7 +13,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: spotify-nginx
+    container_name: x-nginx
     depends_on:
       - project
     command: nginx -g 'daemon off;'
