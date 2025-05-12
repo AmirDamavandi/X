@@ -27,7 +27,7 @@ MediaFormSet = inlineformset_factory(
     widgets={
         'media': forms.ClearableFileInput(
             attrs={
-                'hidden': True, 'accept': 'image/png, image/gif, image/jpeg, video/mp4, video/webm, video/ogg'
+                'hidden': True, 'accept': 'image/png, image/gif, image/jpeg, image/heic, video/mp4, video/webm, video/ogg'
             }
         ),
     },
